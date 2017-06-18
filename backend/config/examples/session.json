@@ -1,0 +1,7 @@
+{
+  "redisHost": "127.0.0.1",
+  "redisPort": 6379,
+  "redisDBIndex": 2,
+  "redisTTL": 2592000,
+  "secret": "DgsGyb1rd1ZH"
+}

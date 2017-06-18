@@ -1,0 +1,30 @@
+<!doctype html>
+<html>
+<head>
+    <title>Sample App</title>
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+    <link rel="stylesheet" href="/public/common.css?build=<%= build %>">
+    <% for(var i = 0; i < styles.length; i++) { %>
+    <%- styles[i] %>
+    <% } %>
+</head>
+<body>
+<div id='root'>
+    <% if (typeof body !== 'undefined') { %>
+        <%- body %>
+    <% } %>
+</div>
+
+<% if (typeof preloadStates !==  'undefined') { %>
+<script>
+    window.__PRELOADED_STATES__ = '<%- preloadStates %>';
+    window.__PRELOADED_STATES__ = JSON.parse(decodeURIComponent(window.__PRELOADED_STATES__));
+</script>
+<% } %>
+
+<script src="/public/common.js?build=<%= build %>"></script>
+<script src="/public/mobile.js?build=<%= build %>"></script>
+<script src="/public/desktop.js?build=<%= build %>"></script>
+
+</body>
+</html>

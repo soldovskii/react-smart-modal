@@ -1,0 +1,9 @@
+{
+    "defaultHostname": "demo-example.ru",
+    "domains": {
+        "ru": [
+            "demo-example.ru"
+        ]
+    },
+    "secret": "ZJGIfej499hdf24ets3h98e5c"
+}

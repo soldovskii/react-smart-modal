@@ -1,0 +1,4 @@
+{
+  "sockFile": "{ PATH TO php-fpm.sock }",
+  "documentRoot": "{ PATH TO API DIRECTORY }"
+}

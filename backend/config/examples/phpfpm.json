@@ -1,0 +1,4 @@
+{
+  "sockFile": "/run/php/php7.0-fpm.sock",
+  "documentRoot": "/home/%username%/project/demo-api/www/public"
+}

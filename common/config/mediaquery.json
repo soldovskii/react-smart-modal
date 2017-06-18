@@ -1,0 +1,19 @@
+{
+  "mobile": [
+    {
+      "min-width": null,
+      "max-width": "1024px"
+    },
+    {
+      "min-device-width": null,
+      "max-device-width": "1024px",
+      "-webkit-min-device-pixel-ratio": "2"
+    }
+  ],
+  "desktop": [
+    {
+      "min-width": "1025px",
+      "max-width": null
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+.idea
+.DS_Store
+jsconfig.json
+node_modules
+/public
+/npm-debug.log
+/config/*.log
+/config/*.json
+/nbproject/private/
+.vscode

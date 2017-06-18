@@ -1,0 +1,10 @@
+{
+  "enabledServerRendering": false,
+  "enabledBulkRequest": true,
+  "requestProvider": "fpm",
+  "requestFPMSettings": {},
+  "requestAPISettings": {},
+  "enabledRequestSignature": true,
+  "RequestSignatureSettings": {},
+  "enableAdaptiveTemplate": true
+}
