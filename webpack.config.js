@@ -10,7 +10,7 @@ let webpackConfig = {
     output : {
         path      : path.resolve(__dirname, 'public/app'),
         filename  : '[name].js',
-        publicPath: '/public/',
+        publicPath: '/public/'
     },
     resolve: {
         extensions: ['.js', '.jsx'],
@@ -44,11 +44,11 @@ let webpackConfig = {
                         },
                         {
                             loader: 'postcss-loader', options: {
-                                sourceMap: DEBUG,
-                            }
-                        },
+                            sourceMap: DEBUG
+                        }
+                        }
                     ]
-                }),
+                })
             },
             {
                 test: /\.scss$/,
@@ -59,10 +59,11 @@ let webpackConfig = {
                             {
                                 loader : 'css-loader',
                                 options: {
-                                    sourceMap    : DEBUG,
-                                    minimize     : !DEBUG,
-                                    importLoaders: 1,
-                                    modules      : true
+                                    sourceMap     : DEBUG,
+                                    minimize      : !DEBUG,
+                                    importLoaders : 1,
+                                    modules       : true,
+                                    localIdentName: '[local]--[hash:base64:8]'
                                 }
                             },
                             {
@@ -71,7 +72,7 @@ let webpackConfig = {
                             {
                                 loader : 'postcss-loader',
                                 options: {
-                                    sourceMap: DEBUG,
+                                    sourceMap: DEBUG
                                 }
                             },
                             {
@@ -83,7 +84,7 @@ let webpackConfig = {
                             }
                         ]
                     }
-                )),
+                ))
             },
             {
                 test  : /\.woff2?$|\.ttf$|\.eot$|\.svg$|\.png|\.jpe?g|\.gif$/,
@@ -124,7 +125,7 @@ if (DEBUG) {
     webpackConfig.entry = {
         desktop: [/*'react-hot-loader/patch', 'webpack-hot-middleware/client?name=desktop',*/ './$desktop/index'],
         mobile : [/*'react-hot-loader/patch', 'webpack-hot-middleware/client?name=mobile', */'./$mobile/index'],
-        common: ['./index']
+        common : ['./index']
     };
 
     // webpackConfig.module.loaders[0]['query']['plugins'].push('react-hot-loader/babel');
@@ -133,9 +134,9 @@ if (DEBUG) {
     webpackConfig.plugins.push(new webpack.HotModuleReplacementPlugin());
 
     webpackConfig.devServer = {
-        host : 'localhost', // Defaults to `localhost`
-        port : 4001, // Defaults to 8080
-        proxy: {
+        host        : 'localhost', // Defaults to `localhost`
+        port        : 4001, // Defaults to 8080
+        proxy       : {
             '/': {
                 target: 'http://localhost:4000/',
                 secure: false
@@ -143,14 +144,14 @@ if (DEBUG) {
         },
         watchOptions: {
             aggregateTimeout: 300,
-            poll: 1000
-        },
+            poll            : 1000
+        }
     };
 } else {
     webpackConfig.entry = {
         desktop: './$desktop/index',
         mobile : './$mobile/index',
-        common: './index'
+        common : './index'
     };
 
     webpackConfig.plugins.push(new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }));
