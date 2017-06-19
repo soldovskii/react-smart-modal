@@ -16,6 +16,7 @@ function getConfig(filename) {
             if (json) {
                 configStore[filename] = json;
             } else {
+                debug(`Config file ${filename}.json not found`);
                 configStore[filename] = {};
             }
         } catch (e) {
@@ -28,11 +29,11 @@ function getConfig(filename) {
 
 function getValue(path, config, name) {
     let section = path.shift();
-    let value   = config && config[section] ? config[section] : null;
+    let value   = config && section in config ? config[section] : null;
 
     name += '.' + section;
 
-    if (!value) {
+    if (value === null) {
         debug(name + ' not found');
         return null;
     }
