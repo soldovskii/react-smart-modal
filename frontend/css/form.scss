@@ -1,0 +1,28 @@
+:global {
+
+  .extra-form {
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    .button-container {
+      text-align: center;
+
+      button[type=submit] {
+
+      }
+    }
+
+    .input-container {
+      label + input {
+        display: block;
+      }
+
+      margin-bottom: 10px;
+    }
+
+  }
+
+}

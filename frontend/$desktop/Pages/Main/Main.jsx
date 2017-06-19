@@ -1,49 +1,59 @@
 import CSSModules from 'react-css-modules';
 
 import React, { Component } from 'react';
-import Helmet               from 'react-helmet';
+import Helmet from 'react-helmet';
 
-import globalStore          from 'common/modules/globalStore';
-import fetchData            from 'common/modules/@fetchData';
+import globalStore from 'common/modules/globalStore';
 
-import locale               from 'frontend/modules/localization';
+import locale from 'frontend/modules/localization';
 
-import APIComponent         from 'frontend/APIComponent';
+import ReactSmartModal from 'common/components/react-smart-modal';
 
-const _ = locale.get.bind(locale);
+const _ = locale.get.bind(locale, require('./Main.json'));
 
-let requestRules = [
-    { 'mainNews': 'news/main' }
-];
-@fetchData(requestRules)
 @CSSModules(require('./Main.scss'))
-export default class Main extends APIComponent {
+export default class Main extends Component {
     constructor(props) {
-        super(props, requestRules, true, false);
+        super(props);
 
         let { Template, Main } = globalStore.take('preloadStates') || {};
         let { products }       = Template || {};
-        let { mainNews }       = Main || {};
+        let { mainArticles }   = Main || {};
 
         this.state = {
-            products: products,
-            mainNews: mainNews
+            products    : products,
+            mainArticles: mainArticles,
+            modalIsOpen : true
         };
     }
 
     render() {
-        let { products, mainNews } = this.state;
+        let { modalIsOpen } = this.state;
 
         return (
             <div styleName="page-main">
                 <Helmet titleTemplate={`${_('company_name')} - %s`}
-                        title='главная'/>
+                        title={_('page_main')}/>
 
-                Desktop news
+                <div onClick={() => this.setState({ modalIsOpen: !modalIsOpen })}>click me</div>
 
-                {
-                    mainNews && mainNews.map(n => <div key={`n_id-${n.id}`}>{ n.name }</div>)
-                }
+                <ReactSmartModal open={modalIsOpen}>
+                    <form className="extra-form">
+                        <h2> Login Form </h2>
+                        <div className="input-container">
+                            <label htmlFor="login">Login</label>
+                            <input id="login" type="text"/>
+                        </div>
+                        <div className="input-container">
+                            <label htmlFor="password">Password</label>
+                            <input id="password" type="password"/>
+                        </div>
+
+                        <div className="button-container">
+                            <button type="submit">LOGIN</button>
+                        </div>
+                    </form>
+                </ReactSmartModal>
             </div>
         );
     }

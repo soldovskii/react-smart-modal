@@ -28,6 +28,7 @@
     "css-loader": "^0.25.0",
     "css-modules-require-hook": "^4.0.6",
     "ejs": "^2.5.6",
+    "exenv": "^1.2.2",
     "express": "^4.14.0",
     "express-robots": "^0.1.6",
     "express-session": "^1.14.1",

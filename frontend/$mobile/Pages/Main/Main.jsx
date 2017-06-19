@@ -1,26 +1,20 @@
 import CSSModules from 'react-css-modules';
-import './Main.scss';
 
 import React, { Component } from 'react';
 import Helmet               from 'react-helmet';
 
 import globalStore          from 'common/modules/globalStore';
-import fetchData            from 'common/modules/@fetchData';
 
 import locale               from 'frontend/modules/localization';
 
-import APIComponent         from 'frontend/APIComponent';
+import ReactSmartModal      from 'common/components/react-smart-modal';
 
 const _ = locale.get.bind(locale, require('./Main.json'));
 
-let requestRules = [
-    { 'mainArticles': 'articles/main' }
-];
-@fetchData(requestRules)
 @CSSModules(require('./Main.scss'))
-export default class Main extends APIComponent {
+export default class Main extends Component {
     constructor(props) {
-        super(props, requestRules, true, false);
+        super(props);
 
         let { Template, Main } = globalStore.take('preloadStates') || {};
         let { products }       = Template || {};
@@ -33,18 +27,14 @@ export default class Main extends APIComponent {
     }
 
     render() {
-        let { products, mainArticles } = this.state;
-
         return (
             <div styleName="page-main">
                 <Helmet titleTemplate={`${_('company_name')} - %s`}
-                        title='главная'/>
+                        title={_('page_main')}/>
 
-                {_('mobile-articles')}
-
-                {
-                    mainArticles && mainArticles.map(n => <div key={`n_id-${n.id}`}>{ n.title }</div>)
-                }
+                <ReactSmartModal open={true}>
+                    test
+                </ReactSmartModal>
             </div>
         );
     }

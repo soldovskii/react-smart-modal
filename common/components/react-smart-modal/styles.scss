@@ -1,0 +1,30 @@
+.react-smart-modal {
+  background-color: blue;
+}
+
+.react-smart-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(252, 252, 252, 0.7);
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.react-smart-modal-body {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  max-width: 100%;
+  transform: translate(-50%, 0);
+  background: rgb(255, 255, 255);
+  overflow: visible;
+  outline: none;
+  padding: 30px;
+  margin-bottom: 10%;
+  margin-top: 10%;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 16px 60px 20px;
+  box-sizing: border-box;
+}
