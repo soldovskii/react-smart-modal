@@ -56,30 +56,16 @@ gulp.task('configs', function () {
 
 //endregion
 
-//region Modules JS
+//region COMMON JS, JSX
 
-const modulesSrcDir = ['common/modules/**/*.js'];
-const modulesPubDir = publicDir + 'common/modules';
+const commonSrcDir = ['common/**/*.js', 'common/**/*.jsx'];
+const commonPubDir = publicDir + 'common';
 
-gulp.task('modules', () =>
-    gulp.src(modulesSrcDir)
+gulp.task('common', () =>
+    gulp.src(commonSrcDir)
         .pipe(plumber(plumberConf))
         .pipe(babel(babelConf))
-        .pipe(gulp.dest(modulesPubDir))
-);
-
-//endregion
-
-//region Helpers JS
-
-const helpersSrcDir = ['common/helpers/**/*.js'];
-const helpersPubDir = publicDir + 'common/helpers';
-
-gulp.task('helpers', () =>
-    gulp.src(helpersSrcDir)
-        .pipe(plumber(plumberConf))
-        .pipe(babel(babelConf))
-        .pipe(gulp.dest(helpersPubDir))
+        .pipe(gulp.dest(commonPubDir))
 );
 
 //endregion
@@ -174,9 +160,10 @@ gulp.task('clean', () => {
         .pipe(clean());
 });
 
-gulp.task('default', gulp.series('clean', 'configs', 'modules', 'helpers', 'backend-js', 'backend-nonjs', 'frontend-js', 'frontend-nonjs', 'imagemin', 'imageunmin', 'sass', function (done) {
+gulp.task('default', gulp.series('clean', 'configs', 'common', 'backend-js', 'backend-nonjs', 'frontend-js', 'frontend-nonjs', 'imagemin', 'imageunmin', 'sass', function (done) {
 
     if (DEBUG) {
+
         //region Config JSON
 
         const configWatcher = gulp.watch(configSrcDir);
@@ -190,23 +177,10 @@ gulp.task('default', gulp.series('clean', 'configs', 'modules', 'helpers', 'back
 
         //endregion
 
-        //region Modules JS watch
+        //region Common JS, JSX watch
 
-        const modulesWatcher = gulp.watch(modulesSrcDir);
+        const modulesWatcher = gulp.watch(commonSrcDir);
         modulesWatcher.on('change', (file) => {
-            console.log('File ' + file + ' was changed');
-            gulp.src([file])
-                .pipe(plumber(plumberConf))
-                .pipe(babel(babelConf))
-                .pipe(gulp.dest(publicDir + path.dirname(file)));
-        });
-
-        //endregion
-
-        //region Helpers JS watch
-
-        const helpersWatcher = gulp.watch(helpersSrcDir);
-        helpersWatcher.on('change', (file) => {
             console.log('File ' + file + ' was changed');
             gulp.src([file])
                 .pipe(plumber(plumberConf))
