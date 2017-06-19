@@ -63,7 +63,7 @@ let webpackConfig = {
                                     minimize      : !DEBUG,
                                     importLoaders : 1,
                                     modules       : true,
-                                    localIdentName: '[local]--[hash:8]',
+                                    localIdentName: DEBUG ? '[local]--[hash:8]' : '[hash:8]',
                                     context: __dirname
                                 }
                             },
