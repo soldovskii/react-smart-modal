@@ -44,8 +44,8 @@ let webpackConfig = {
                         },
                         {
                             loader: 'postcss-loader', options: {
-                            sourceMap: DEBUG
-                        }
+                                sourceMap: DEBUG
+                            }
                         }
                     ]
                 })
@@ -63,7 +63,8 @@ let webpackConfig = {
                                     minimize      : !DEBUG,
                                     importLoaders : 1,
                                     modules       : true,
-                                    localIdentName: '[local]--[hash:base64:8]'
+                                    localIdentName: '[local]--[hash:8]',
+                                    context: __dirname
                                 }
                             },
                             {
@@ -107,6 +108,9 @@ let webpackConfig = {
                     && (
                         module.context.indexOf('node_modules') !== -1
                         || module.context.indexOf('frontend/modules') !== -1
+                        || module.context.indexOf('common/modules') !== -1
+                        || module.context.indexOf('common/helpers') !== -1
+                        || module.context.indexOf('common/config') !== -1
                         || module.resource && module.resource.indexOf('localization.json') !== -1
                     )
                 ) {

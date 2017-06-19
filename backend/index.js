@@ -43,7 +43,7 @@ const robots      = require('express-robots');
 const useragent   = require('express-useragent');
 
 // Middleware's
-// const sessionMiddleware = require('./middleware/session');
+// const sessionMiddleware         = require('./middleware/session');
 const sessionDefaultsMiddleware = require('./middleware/sessionDefaults');
 
 // Route's
@@ -129,7 +129,13 @@ app.set('view engine', 'ejs');
 //endregion
 
 const serverRendering = (req, res, build) => {
-    let routes = req.useragent.isMobile ? reactMobileRoutes : reactDesktopRoutes;
+    let { isMobile = false } = req.useragent;
+
+    let serverProps = {
+        isMobile: isMobile
+    };
+
+    let routes = isMobile ? reactMobileRoutes : reactDesktopRoutes;
 
     match({ routes: routes, location: req.url }, (error, redirectLocation, renderProps) => {
         if (error) {
@@ -140,19 +146,25 @@ const serverRendering = (req, res, build) => {
             serverFetch(req, res, apiRequest, renderProps, req.session,
                 (preloadStates) => {
 
+                    console.time('ssr');
+
                     globalStore.flush();
                     globalStore.put('preloadStates', preloadStates);
 
                     let body = renderToString(
-                        <RouterContext { ...renderProps } />
+                        <RouterContext {...renderProps} />
                     );
 
                     res.render('index', {
-                        body: body,
-                        build: build,
-                        styles: generateMediaQueryLinks(mediaQueryConfig, build),
-                        preloadStates: encodeURIComponent(JSON.stringify(preloadStates))
+                        body         : body,
+                        build        : build,
+                        isMobile     : isMobile,
+                        styles       : generateMediaQueryLinks(mediaQueryConfig, build),
+                        preloadStates: encodeURIComponent(JSON.stringify(preloadStates)),
+                        serverProps  : encodeURIComponent(JSON.stringify(serverProps))
                     });
+
+                    console.timeEnd('ssr');
                 },
                 (error) => {
                     console.error(error);
@@ -165,9 +177,17 @@ const serverRendering = (req, res, build) => {
 };
 
 const staticRender = (req, res, build) => {
+    let { isMobile = false } = req.useragent;
+
+    let serverProps = {
+        isMobile: isMobile
+    };
+
     res.render('index', {
-        build: build,
-        styles: generateMediaQueryLinks(mediaQueryConfig, build)
+        build      : build,
+        isMobile   : isMobile,
+        styles     : generateMediaQueryLinks(mediaQueryConfig, build),
+        serverProps: encodeURIComponent(JSON.stringify(serverProps))
     });
 };
 

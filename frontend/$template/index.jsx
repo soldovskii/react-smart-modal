@@ -6,7 +6,7 @@ import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
 import Helmet             from 'react-helmet';
 
-import fetchData  from 'frontend/modules/@fetchData';
+import fetchData  from 'common/modules/@fetchData';
 import locale     from 'frontend/modules/localization';
 import globalLoc  from '../localization.json';
 

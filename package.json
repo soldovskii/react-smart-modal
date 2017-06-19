@@ -1,7 +1,7 @@
 {
-  "name": "react-smart-modal",
+  "name": "ProjectTemplate",
   "version": "1.0.0",
-  "description": "react-smart-modal",
+  "description": "ProjectTemplate",
   "scripts": {
     "start": "NODE_PATH=./public/ node public/backend/index.js",
     "lint": "eslint frontend"
@@ -13,7 +13,7 @@
     "axios": "^0.14.0",
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
-    "babel-plugin-react-css-modules": "^2.8.0",
+    "babel-plugin-css-modules-transform": "^1.2.7",
     "babel-plugin-transform-class-properties": "^6.11.5",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",

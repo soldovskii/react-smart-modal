@@ -13,18 +13,23 @@ const imageminMozjpeg  = require('imagemin-mozjpeg');
 const imageminPngquant = require('imagemin-pngquant');
 const imageminSvgo     = require('imagemin-svgo');
 
-const nodemon    = require('gulp-nodemon');
+const nodemon = require('gulp-nodemon');
 
 const babelConf = {
-    presets: ['react'],
+    presets: ['es2015', 'react'],
     plugins: [
         'transform-es2015-modules-commonjs',
         'transform-decorators-legacy',
         'transform-class-properties',
         [
+            'css-modules-transform', {
+                'preprocessCss'     : './loaders/sass-loader.js',
+                'generateScopedName': '[local]--[hash:8]',
+                'extensions'        : ['.css', '.scss']
+            },
             'babel-plugin-transform-require-ignore',
             {
-                'extensions': ['.scss', '.css']
+                'extensions': ['.css']
             }
         ]
     ]
@@ -299,11 +304,11 @@ gulp.task('default', gulp.series('clean', 'configs', 'modules', 'helpers', 'back
         nodemon({
             // the script to run the app
             script: 'public/backend/index.js',
-            ext: 'js jsx ejs css json',
-            env: { 'NODE_PATH': 'public/' }
-        }).on('restart', function(){
+            ext   : 'js jsx ejs css json',
+            env   : { 'NODE_PATH': 'public/' }
+        }).on('restart', function () {
             // when the app has restarted, run livereload.
-            gulp.src('public/backend/index.js')
+            gulp.src('public/backend/index.js');
         });
     }
 

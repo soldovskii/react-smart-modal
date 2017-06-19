@@ -8,17 +8,16 @@ import globalStore          from 'common/modules/globalStore';
 export default function fetchData(fetchRules) {
     return function (Target) {
         return class FetchWrapper extends Component {
-            static fetchComponentName = `${Target.name}`;
 
-            static originalComponent = Target;
+            static fetchComponentName = Target.displayName || Target.name;
 
             static getFetchRules = () => fetchRules;
 
             constructor(props) {
                 super(props);
 
-                let preloadStates = globalStore.take('preloadStates');
-                let componentName = FetchWrapper.fetchComponentName;
+                let preloadStates = globalStore.take('preloadStates') || {};
+                let componentName = Target.displayName || Target.name;
                 let stateObject   = {};
 
                 fetchRules.forEach(fetchItem => {

@@ -31,7 +31,8 @@ export default class APIComponent extends Component {
      */
     loadAPIData(params, session, requestRules, callback) {
         let completeProps = Object.assign({}, params, session);
-        let componentName = this.constructor.name;
+
+        let componentName = this.constructor.displayName || this.constructor.name;
 
         if (requestRules.length > 0) {
             clientFetch(axios, requestRules, completeProps,

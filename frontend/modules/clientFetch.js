@@ -10,7 +10,8 @@ export function clientFetch(fetch, fetchRules, completeProps, success, fail, com
 
     let bulkLinks            = {};
     let allBulkObjects       = {};
-    let preloadComponentData = preloadState[componentName];
+
+    let preloadComponentData = preloadState[componentName] || {};
 
     if (force || !preloadComponentData) {
         let componentData = {};
@@ -50,8 +51,6 @@ export function clientFetch(fetch, fetchRules, completeProps, success, fail, com
 
                          componentData[propName] = propValue;
                      }
-
-                     console.log(componentData);
 
                      success(componentData);
 

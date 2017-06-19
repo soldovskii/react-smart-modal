@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import Helmet               from 'react-helmet';
 
 import globalStore          from 'common/modules/globalStore';
-import fetchData            from 'frontend/modules/@fetchData';
+import fetchData            from 'common/modules/@fetchData';
 
 import locale               from 'frontend/modules/localization';
 
@@ -20,7 +20,7 @@ let requestRules = [
 @CSSModules(require('./Main.scss'))
 export default class Main extends APIComponent {
     constructor(props) {
-        super(props, requestRules, true, true);
+        super(props, requestRules, true, false);
 
         let { Template, Main } = globalStore.take('preloadStates') || {};
         let { products }       = Template || {};

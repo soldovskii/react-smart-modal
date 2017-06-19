@@ -4,21 +4,29 @@
     <title>Sample App</title>
     <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
     <link rel="stylesheet" href="/public/common.css?build=<%= build %>">
-    <% for(var i = 0; i < styles.length; i++) { %>
-    <%- styles[i] %>
+    <% if (typeof isMobile !== 'undefined') { %>
+        <% if (isMobile === true) { %><link rel="stylesheet" href="/public/mobile.css?build=<%= build %>"><% } %>
+        <% if (isMobile === false) { %><link rel="stylesheet" href="/public/desktop.css?build=<%= build %>"><% } %>
+    <% } else { %>
+        <% for(var i = 0; i < styles.length; i++) { %>
+            <%- styles[i] %>
+        <% } %>
     <% } %>
 </head>
 <body>
-<div id='root'>
-    <% if (typeof body !== 'undefined') { %>
-        <%- body %>
-    <% } %>
-</div>
+<div id='root'><% if (typeof body !== 'undefined') { %><%- body %><% } %></div>
 
-<% if (typeof preloadStates !==  'undefined') { %>
+<% if (typeof preloadStates !== 'undefined') { %>
 <script>
-    window.__PRELOADED_STATES__ = '<%- preloadStates %>';
+    window.__PRELOADED_STATES__ = "<%- preloadStates %>"; // important double quotes
     window.__PRELOADED_STATES__ = JSON.parse(decodeURIComponent(window.__PRELOADED_STATES__));
+</script>
+<% } %>
+
+<% if (typeof serverProps !== 'undefined') { %>
+<script>
+    window.__SERVER_PROPS__ = "<%- serverProps %>"; // important double quotes
+    window.__SERVER_PROPS__ = JSON.parse(decodeURIComponent(window.__SERVER_PROPS__));
 </script>
 <% } %>
 

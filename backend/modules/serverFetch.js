@@ -46,6 +46,10 @@ export default function serverFetch(req, res, fetch, renderProps, serverProps, s
         });
     });
 
+    console.log('------------');
+    console.log(allBulkObjects);
+    console.time('request');
+
     fetch(bulkUrl, req, res, { json: allBulkObjects, manual: true })
         .then(({ data }) => {
             for (let prop in data) {
@@ -61,6 +65,8 @@ export default function serverFetch(req, res, fetch, renderProps, serverProps, s
             }
 
             success(preloadStates);
+
+            console.timeEnd('request');
         })
         .catch(error => {
             fail(error);
