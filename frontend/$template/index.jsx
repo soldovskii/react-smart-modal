@@ -1,6 +1,7 @@
 import 'normalize.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'frontend/css/form.scss';
+import 'frontend/css/elements.scss';
 
 import React, { Component } from 'react';
 

@@ -9,8 +9,8 @@ import globalStore from 'common/modules/globalStore';
 
 import { routes } from './routes';
 
+// Читаем признак isMobile
 let { isMobile } = globalStore.take('serverProps') || {};
 
-if (!isMobile) {
-    renderApp(routes, true);
-}
+// Если isMobile равен false, значт рендерим десктопную версию
+if (isMobile === false) renderApp(routes);

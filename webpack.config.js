@@ -155,7 +155,7 @@ if (DEBUG) {
     webpackConfig.entry = {
         desktop: './$desktop/index',
         mobile : './$mobile/index',
-        common : './index'
+        common : './AppEntryPoint'
     };
 
     webpackConfig.plugins.push(new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }));

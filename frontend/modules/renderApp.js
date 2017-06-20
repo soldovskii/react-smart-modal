@@ -2,11 +2,11 @@
  * Created by soldovkij on 16.06.17.
  */
 
-import React                      from 'react';
-import ReactDOM                   from 'react-dom';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 
-import globalStore                from 'common/modules/globalStore';
+import globalStore from 'common/modules/globalStore';
 
 function onUpdate() {
     let history       = globalStore.take('history', true);
@@ -22,15 +22,13 @@ function onUpdate() {
     }
 }
 
-export default function renderApp(routes, firstRender) {
-    if (!firstRender) {
-        ReactDOM.unmountComponentAtNode(document.getElementById('root'));
-    }
+export default function renderApp(routes) {
+    ReactDOM.unmountComponentAtNode(document.getElementById('root'));
 
     ReactDOM.render(
-        <Router onUpdate={ onUpdate }
-                history={ browserHistory }
-                routes={ routes }/>,
+        <Router onUpdate={onUpdate}
+                history={browserHistory}
+                routes={routes}/>,
         document.getElementById('root')
     );
 }
