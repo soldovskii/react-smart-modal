@@ -2,73 +2,72 @@ import CSSModules from 'react-css-modules';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { unstable_renderSubtreeIntoContainer } from 'react-dom';
+import { renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom/lib/ReactMount';
 
 @CSSModules(require('./styles.scss'))
 export default class ReactSmartModal extends Component {
     static propTypes = {
-        modalClassName       : PropTypes.string,
-        modalOverlayClassName: PropTypes.string,
-        modalBodyClassName   : PropTypes.string,
-        bodyOpenClassName    : PropTypes.string
-    };
-
-    static defaultProps = {
-        open                 : false,
-        modalClassName       : 'react-smart-modal',
-        modalOverlayClassName: 'react-smart-modal-overlay',
-        modalBodyClassName   : 'react-smart-modal-body',
-        bodyOpenClassName    : 'react-smart-modal--open'
+        open   : PropTypes.bool.isRequired,
+        onClose: PropTypes.func.isRequired,
+        onOpen : PropTypes.func
     };
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            open: false
-        };
     }
 
     componentDidMount() {
         this.renderChildren(this.props);
+
+        window.addEventListener('keydown', this.onKeyDown, true);
     }
 
     componentWillUnmount() {
         this.renderChildren(Object.assign({}, this.props, { open: false }));
+
+        window.removeEventListener('keydown', this.onKeyDown);
     }
 
     componentWillReceiveProps(nextProps) {
         this.renderChildren(nextProps);
     }
 
-    componentWillUpdate() {
-
-    }
-
     renderChildren(props) {
         if (props.open) {
-            this.modal           = document.createElement('div');
-            this.modal.className = this.props.modalClassName;
-
-            document.body.appendChild(this.modal);
-            document.body.classList.add(props.bodyOpenClassName);
-
-            unstable_renderSubtreeIntoContainer(this, this.renderChildrenBody(props), this.modal);
+            this.mountChildrenBody(props);
         } else {
-            document.body.classList.remove(props.bodyOpenClassName);
-            document.body.removeChild(this.modal);
-
-            unstable_renderSubtreeIntoContainer(this, this.renderChildrenEmpty(), this.modal);
+            this.unmountChildrenBody(props);
         }
     }
 
-    renderChildrenBody(props) {
-        return ( <ReactSmartModalBody {...props} /> );
+    mountChildrenBody(props) {
+        this.modal           = document.createElement('div');
+        this.modal.className = 'react-smart-modal';
+
+        document.body.appendChild(this.modal);
+        document.body.classList.add('react-smart-modal--open');
+
+        renderSubtreeIntoContainer(this, <ReactSmartModalBody {...props} />, this.modal);
     }
 
-    renderChildrenEmpty() {
-        return ( <div></div> );
+    unmountChildrenBody(props) {
+        if (this.modal) {
+            document.body.classList.remove(props.bodyOpenClassName);
+            document.body.removeChild(this.modal);
+
+            unmountComponentAtNode(this.modal);
+
+            delete this.modal;
+        }
     }
+
+    onKeyDown = () => {
+        if (event.keyCode === 27) { // 27 - ESC_CODE
+            event.preventDefault();
+
+            this.props.onClose(event);
+        }
+    };
 
     render() {
         return null;
@@ -77,12 +76,63 @@ export default class ReactSmartModal extends Component {
 
 @CSSModules(require('./styles.scss'))
 class ReactSmartModalBody extends Component {
+    constructor(props) {
+        super(props);
+
+        // Флаг, означающий нужно ли размонитровать модальное окно
+        // Используется, чтобы не обращаться к DOM
+        this.needUnmount = null;
+    }
+
+    componentDidMount() {
+        if (this.props.onOpen) {
+            this.props.onOpen();
+        }
+    }
+
+    callOnClose(event) {
+        this.props.onClose(event);
+    }
+
+    // Клике на фон модального окна
+    onOverlayClick = (event) => {
+        if (this.needUnmount === null) {
+            this.needUnmount = true;
+        }
+
+        if (this.needUnmount === true) {
+            this.callOnClose(event);
+        }
+
+        this.needUnmount = null;
+    };
+
+    // Клике на теле модального окна
+    onBodyClick = (event) => {
+        this.needUnmount = false;
+    };
+
+    onCloseButtonClick = (event) => {
+        this.callOnClose(event);
+    };
 
     render() {
         return (
-            <div styleName="react-smart-modal-overlay">
-                <div styleName="react-smart-modal-body">
+            <div
+                styleName='react-smart-modal-overlay'
+                onClick={this.onOverlayClick}
+            >
+                <div
+                    styleName='react-smart-modal-body'
+                    onClick={this.onBodyClick}
+                >
+                    <div
+                        styleName='react-smart-modal-body__close-button'
+                        onClick={this.onCloseButtonClick}
+                    >&#x2716;</div>
+
                     {this.props.children}
+
                 </div>
             </div>
         );
