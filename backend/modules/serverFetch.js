@@ -46,31 +46,36 @@ export default function serverFetch(req, res, fetch, renderProps, serverProps, s
         });
     });
 
-    console.log('------------');
-    console.log(allBulkObjects);
-    console.time('request');
 
-    fetch(bulkUrl, req, res, { json: allBulkObjects, manual: true })
-        .then(({ data }) => {
-            for (let prop in data) {
-                let componentName = bulkLinks[prop].componentName;
-                let propName      = bulkLinks[prop].propName;
-                let propKey       = Object.keys(data[prop])[0];
-                let propValue     = data[prop][propKey];
+    if (Object.keys(allBulkObjects).length > 0) {
+        console.log('------------');
+        console.log(allBulkObjects);
+        console.time('request');
 
-                if (!preloadStates[componentName]) {
-                    preloadStates[componentName] = {};
+        fetch(bulkUrl, req, res, { json: allBulkObjects, manual: true })
+            .then(({ data }) => {
+                for (let prop in data) {
+                    let componentName = bulkLinks[prop].componentName;
+                    let propName      = bulkLinks[prop].propName;
+                    let propKey       = Object.keys(data[prop])[0];
+                    let propValue     = data[prop][propKey];
+
+                    if (!preloadStates[componentName]) {
+                        preloadStates[componentName] = {};
+                    }
+                    preloadStates[componentName][propName] = propValue;
                 }
-                preloadStates[componentName][propName] = propValue;
-            }
 
-            success(preloadStates);
+                success(preloadStates);
 
-            console.timeEnd('request');
-        })
-        .catch(error => {
-            fail(error);
-        });
+                console.timeEnd('request');
+            })
+            .catch(error => {
+                fail(error);
+            });
+    } else {
+        success({});
+    }
 }
 
 module.exports = serverFetch;

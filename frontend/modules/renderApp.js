@@ -23,8 +23,6 @@ function onUpdate() {
 }
 
 export default function renderApp(routes) {
-    ReactDOM.unmountComponentAtNode(document.getElementById('root'));
-
     ReactDOM.render(
         <Router onUpdate={onUpdate}
                 history={browserHistory}

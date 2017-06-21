@@ -14,10 +14,10 @@ import globalLoc  from '../localization.json';
 
 const _ = locale.set(globalLoc);
 
-let requestRules = [
-    { 'products': 'product/getList' }
-];
-@fetchData(requestRules)
+//let requestRules = [
+//    { 'products': 'product/getList' }
+//];
+//@fetchData(requestRules)
 export default class Template extends Component {
     constructor(props) {
         super(props);
