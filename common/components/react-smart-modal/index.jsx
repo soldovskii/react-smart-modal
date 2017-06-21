@@ -8,65 +8,87 @@ import { renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom/li
 export default class ReactSmartModal extends Component {
     static propTypes = {
         open   : PropTypes.bool.isRequired,
-        onClose: PropTypes.func.isRequired,
-        onOpen : PropTypes.func
+        onOpen : PropTypes.func,
+        onClose: PropTypes.func
+    };
+
+    static defaultProps = {
+        open: false
     };
 
     constructor(props) {
         super(props);
+
+        this.currentState = null;
     }
 
     componentDidMount() {
-        this.renderChildren(this.props);
-
-        window.addEventListener('keydown', this.onKeyDown, true);
+        this.renderChildren(this.props.open);
     }
 
     componentWillUnmount() {
-        this.renderChildren(Object.assign({}, this.props, { open: false }));
-
-        window.removeEventListener('keydown', this.onKeyDown);
+        this.renderChildren();
     }
 
     componentWillReceiveProps(nextProps) {
-        this.renderChildren(nextProps);
+        this.renderChildren(nextProps.open);
     }
 
-    renderChildren(props) {
-        if (props.open) {
-            this.mountChildrenBody(props);
+    renderChildren(isOpen) {
+        if (this.currentState === isOpen) {
+            return;
         } else {
-            this.unmountChildrenBody(props);
+            this.currentState = isOpen;
+        }
+
+        console.log('--------------');
+        console.log('renderChildren');
+
+        if (isOpen) {
+            this.mountChildrenBody();
+        } else {
+            this.unmountChildrenBody();
         }
     }
 
-    mountChildrenBody(props) {
-        this.modal           = document.createElement('div');
-        this.modal.className = 'react-smart-modal';
+    mountChildrenBody() {
+        console.log('mountChildrenBody');
 
-        document.body.appendChild(this.modal);
+        this.modalContainer           = document.createElement('div');
+        this.modalContainer.className = 'react-smart-modal';
+
+        document.body.appendChild(this.modalContainer);
         document.body.classList.add('react-smart-modal--open');
 
-        renderSubtreeIntoContainer(this, <ReactSmartModalBody {...props} />, this.modal);
+        renderSubtreeIntoContainer(
+            this,
+            <ReactSmartModalBody
+                {...this.props}
+                closeModal={this.closeModal}
+            />,
+            this.modalContainer);
     }
 
-    unmountChildrenBody(props) {
-        if (this.modal) {
-            document.body.classList.remove(props.bodyOpenClassName);
-            document.body.removeChild(this.modal);
+    unmountChildrenBody() {
+        console.log('unmountChildrenBody');
 
-            unmountComponentAtNode(this.modal);
+        if (this.modalContainer) {
+            document.body.classList.remove('react-smart-modal--open');
 
-            delete this.modal;
+            document.body.removeChild(this.modalContainer);
+
+            unmountComponentAtNode(this.modalContainer);
+
+            delete this.modalContainer;
         }
     }
 
-    onKeyDown = () => {
-        if (event.keyCode === 27) { // 27 - ESC_CODE
-            event.preventDefault();
+    openModal = () => {
+        this.renderChildren(true);
+    };
 
-            this.props.onClose(event);
-        }
+    closeModal = () => {
+        this.renderChildren(false);
     };
 
     render() {
@@ -76,44 +98,60 @@ export default class ReactSmartModal extends Component {
 
 @CSSModules(require('./styles.scss'))
 class ReactSmartModalBody extends Component {
+    static propTypes = {
+        closeModal: PropTypes.func.isRequired
+    };
+
     constructor(props) {
         super(props);
-
-        // Флаг, означающий нужно ли размонитровать модальное окно
-        // Используется, чтобы не обращаться к DOM
-        this.needUnmount = null;
     }
 
     componentDidMount() {
+        window.addEventListener('keydown', this.onKeyDown, true);
+
+        console.log('componentDidMount');
+
         if (this.props.onOpen) {
             this.props.onOpen();
         }
     }
 
-    callOnClose(event) {
-        this.props.onClose(event);
+    componentWillUnmount() {
+        window.removeEventListener('keydown', this.onKeyDown, true);
+
+        console.log('componentWillUnmount');
+
+        if (this.props.onClose) {
+            this.props.onClose();
+        }
     }
 
-    // Клике на фон модального окна
-    onOverlayClick = (event) => {
-        if (this.needUnmount === null) {
-            this.needUnmount = true;
-        }
-
-        if (this.needUnmount === true) {
-            this.callOnClose(event);
-        }
-
-        this.needUnmount = null;
-    };
-
-    // Клике на теле модального окна
-    onBodyClick = (event) => {
-        this.needUnmount = false;
-    };
+    callCloseModal() {
+        this.props.closeModal();
+    }
 
     onCloseButtonClick = (event) => {
-        this.callOnClose(event);
+        event.stopPropagation();
+
+        this.callCloseModal();
+    };
+
+    onOverlayClick = (event) => {
+        event.stopPropagation();
+
+        this.callCloseModal();
+    };
+
+    onBodyClick = (event) => {
+        event.stopPropagation();
+    };
+
+    onKeyDown = (event) => {
+        if (event.keyCode === 27) { // 27 - ESC_CODE
+            event.preventDefault();
+
+            this.callCloseModal(event);
+        }
     };
 
     render() {
