@@ -44,7 +44,12 @@ export default class Main extends Component {
 
                 <ReactSmartModal
                     open={modalIsOpen}
-                    onClose={() => this.setState({ modalIsOpen: false })}
+                    onOpen={() => {
+                        console.log('onOpen');
+                    }}
+                    onClose={() => {
+                        console.log('onClose');
+                    }}
                 >
                     <form className="extra-form">
                         <h2> Login Form </h2>

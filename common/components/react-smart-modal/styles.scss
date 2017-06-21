@@ -28,6 +28,7 @@
   margin-top: 10%;
   box-shadow: rgba(0, 0, 0, 0.1) 0 16px 60px 20px;
   box-sizing: border-box;
+  border-radius: 10px;
   -webkit-overflow-scrolling: touch;
 
   &__close-button {
@@ -43,6 +44,11 @@
 
     &:hover {
       color: red;
+    }
+
+    @media screen and (max-device-width: 520px){
+      padding: 8px;
+      margin: 8px;
     }
   }
 }
