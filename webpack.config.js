@@ -129,7 +129,7 @@ if (DEBUG) {
     webpackConfig.entry = {
         desktop: [/*'react-hot-loader/patch', 'webpack-hot-middleware/client?name=desktop',*/ './$desktop/index'],
         mobile : [/*'react-hot-loader/patch', 'webpack-hot-middleware/client?name=mobile', */'./$mobile/index'],
-        common : ['./index']
+        common : ['./EntryPoint']
     };
 
     // webpackConfig.module.loaders[0]['query']['plugins'].push('react-hot-loader/babel');
@@ -155,7 +155,7 @@ if (DEBUG) {
     webpackConfig.entry = {
         desktop: './$desktop/index',
         mobile : './$mobile/index',
-        common : './AppEntryPoint'
+        common : './EntryPoint'
     };
 
     webpackConfig.plugins.push(new webpack.DefinePlugin({ 'process.env': { NODE_ENV: JSON.stringify('production') } }));
