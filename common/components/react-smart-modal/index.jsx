@@ -2,6 +2,7 @@ import CSSModules from 'react-css-modules';
 
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { TransitionMotion, spring } from 'react-motion';
 import { renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom/lib/ReactMount';
 
 @CSSModules(require('./styles.scss'))
@@ -24,9 +25,13 @@ export default class ReactSmartModal extends Component {
 
     componentDidMount() {
         this.renderChildren(this.props.open);
+
+        window.addEventListener('keydown', this.onKeyDown, true);
     }
 
     componentWillUnmount() {
+        window.removeEventListener('keydown', this.onKeyDown, true);
+
         this.renderChildren();
     }
 
@@ -41,9 +46,6 @@ export default class ReactSmartModal extends Component {
             this.currentState = isOpen;
         }
 
-        console.log('--------------');
-        console.log('renderChildren');
-
         if (isOpen) {
             this.mountChildrenBody();
         } else {
@@ -52,8 +54,6 @@ export default class ReactSmartModal extends Component {
     }
 
     mountChildrenBody() {
-        console.log('mountChildrenBody');
-
         this.modalContainer           = document.createElement('div');
         this.modalContainer.className = 'react-smart-modal';
 
@@ -70,8 +70,6 @@ export default class ReactSmartModal extends Component {
     }
 
     unmountChildrenBody() {
-        console.log('unmountChildrenBody');
-
         if (this.modalContainer) {
             document.body.classList.remove('react-smart-modal--open');
 
@@ -91,6 +89,14 @@ export default class ReactSmartModal extends Component {
         this.renderChildren(false);
     };
 
+    onKeyDown = (event) => {
+        if (event.keyCode === 27) { // 27 - ESC_CODE
+            event.preventDefault();
+
+            this.closeModal();
+        }
+    };
+
     render() {
         return null;
     }
@@ -104,12 +110,16 @@ class ReactSmartModalBody extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            items: []
+        };
     }
 
     componentDidMount() {
-        window.addEventListener('keydown', this.onKeyDown, true);
-
-        console.log('componentDidMount');
+        this.setState({
+            items: [{ key: 'modal', style: { y: 10, opacity: 0 } }]
+        });
 
         if (this.props.onOpen) {
             this.props.onOpen();
@@ -117,9 +127,9 @@ class ReactSmartModalBody extends Component {
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.onKeyDown, true);
-
-        console.log('componentWillUnmount');
+        this.setState({
+            items: []
+        });
 
         if (this.props.onClose) {
             this.props.onClose();
@@ -146,13 +156,16 @@ class ReactSmartModalBody extends Component {
         event.stopPropagation();
     };
 
-    onKeyDown = (event) => {
-        if (event.keyCode === 27) { // 27 - ESC_CODE
-            event.preventDefault();
+    willLeave() {
+        console.log('willLeave');
+        return { y: spring(0), opacity: spring(0) };
+    }
 
-            this.callCloseModal(event);
-        }
-    };
+    willEnter() {
+        console.log('willEnter');
+
+        return { y: spring(50), opacity: spring(1) };
+    }
 
     render() {
         return (
@@ -169,7 +182,32 @@ class ReactSmartModalBody extends Component {
                         onClick={this.onCloseButtonClick}
                     >&#x2716;</div>
 
-                    {this.props.children}
+                    <TransitionMotion
+                        willLeave={this.willLeave}
+                        willEnter={this.willEnter}
+                        styles={this.state.items}
+                    >
+
+                        {interpolatedStyles =>
+                            // first render: a, b, c. Second: still a, b, c! Only last one's a, b.
+                            <div>
+                                {interpolatedStyles.map(config => {
+                                    console.log(config);
+
+                                    return <div
+                                        key={config.key}
+                                        style={{
+                                            ...config.style,
+                                            border: '1px solid',
+                                            height: '100px',
+                                            width : '100px'
+                                        }}/>;
+                                })}
+                            </div>
+                        }
+
+                    </TransitionMotion>
+                    {/*{this.props.children}*/}
 
                 </div>
             </div>

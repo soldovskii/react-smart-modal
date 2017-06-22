@@ -27,7 +27,7 @@ let webpackConfig = {
                 loader : 'babel-loader',
                 query  : {
                     presets: ['es2015', 'react'],
-                    plugins: ['transform-decorators-legacy', 'transform-class-properties']
+                    plugins: ['transform-decorators-legacy', 'transform-class-properties', 'transform-object-rest-spread']
                 }
             },
             {

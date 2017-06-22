@@ -21,14 +21,14 @@ const babelConf = {
         'transform-es2015-modules-commonjs',
         'transform-decorators-legacy',
         'transform-class-properties',
+        'transform-object-rest-spread',
         [
             'css-modules-transform', {
                 'preprocessCss'     : './loaders/sass-loader.js',
                 'generateScopedName': DEBUG ? '[local]--[hash:8]' : '[hash:8]',
                 'extensions'        : ['.css', '.scss']
             },
-            'babel-plugin-transform-require-ignore',
-            {
+            'babel-plugin-transform-require-ignore', {
                 'extensions': ['.css']
             }
         ]
