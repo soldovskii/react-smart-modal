@@ -23,7 +23,7 @@ export default class Main extends Component {
         this.state = {
             products    : products,
             mainArticles: mainArticles,
-            modalIsOpen : true
+            modalIsOpen : false
         };
     }
 
