@@ -76,6 +76,7 @@ console.log('=> NODE_PATH : ' + path.resolve(NODE_PATH));
 console.log('=> NODE_ENV  : ' + NODE_ENV);
 console.log('=> BUILD     : ' + BUILD);
 console.log('=> IS_DEBUG  : ' + DEBUG);
+console.log('=> PORT      : ' + PORT);
 console.log('================================\n');
 
 //endregion
