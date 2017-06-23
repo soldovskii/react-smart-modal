@@ -116,7 +116,7 @@ export default class ReactSmartModal extends Component {
 }
 
 /**
- * Component Controller. Wrapper of ReactSmartModalBody
+ * Component Controller. Animation wrapper of ReactSmartModalBody
  * Controls the display of modal. Listen events for send closeRequest to ReactSmartModal
  */
 @CSSModules(require('./styles.scss'))
@@ -137,7 +137,7 @@ class ReactSmartModalContainer extends Component {
 
     componentDidMount() {
         this.setState({
-            items: [{ key: 'modal', opacity: 1 }]
+            items: [{ key: 'modal', opacity: 1, translateY: 0 }]
         });
 
         window.addEventListener('keydown', this.onKeyDown, true);
@@ -188,11 +188,20 @@ class ReactSmartModalContainer extends Component {
     render() {
         return (
             <TransitionMotion
-                willLeave={() => ({ opacity: spring(0) })}
-                willEnter={() => ({ opacity: 0 })}
+                willLeave={() => ({
+                    opacity   : spring(0, { stiffness: 270, damping: 30, precision: 2 }),
+                    translateY: spring(-200, { stiffness: 280, damping: 30, precision: 400 }),
+                })}
+                willEnter={() => ({
+                    opacity: 0,
+                    translateY: -200
+                })}
                 styles={this.state.items.map(item => ({
                     key  : item.key,
-                    style: { opacity: spring(item.opacity) },
+                    style: {
+                        opacity: spring(item.opacity, { stiffness: 270, damping: 30, precision: 0.01 }),
+                        translateY: spring(item.translateY, { stiffness: 270, damping: 30, precision: 2 })
+                    },
                 }))}
             >
 
@@ -202,7 +211,10 @@ class ReactSmartModalContainer extends Component {
                             return (
                                 <ReactSmartModalBody
                                     key={config.key}
-                                    style={{ ...config.style }}
+                                    style={{
+                                        opacity  : config.style.opacity,
+                                        transform: `translate(-50%, ${config.style.translateY}%)`
+                                    }}
                                     onCloseButtonClick={this.onCloseButtonClick}
                                     onOverlayClick={this.onOverlayClick}
                                     onBodyClick={this.onBodyClick}
@@ -242,12 +254,14 @@ class ReactSmartModalBody extends Component {
 
     render() {
         return (
+            <div>
             <div styleName='react-smart-modal-overlay'
-                 style={{ ...this.props.style }}
+                 style={{ opacity: this.props.style.opacity }}
                  onClick={this.props.onOverlayClick}
-            >
+            ></div>
                 <div
                     styleName='react-smart-modal-body'
+                    style={{ transform: this.props.style.transform }}
                     onClick={this.props.onBodyClick}
                 >
                     <div
