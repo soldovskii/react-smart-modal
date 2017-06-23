@@ -53,6 +53,7 @@ export default class Main extends Component {
                     onClose={() => {
                         console.log('onClose');
                     }}
+                    shortcut='r'
                 >
                     <form className="extra-form">
                         <h2> Login Form </h2>

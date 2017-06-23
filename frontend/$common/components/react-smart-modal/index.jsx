@@ -25,7 +25,7 @@ export default class ReactSmartModal extends Component {
         open    : PropTypes.bool.isRequired,
         onOpen  : PropTypes.func,
         onClose : PropTypes.func,
-        shortcut: PropTypes.number
+        shortcut: PropTypes.string
     };
 
     static defaultProps = {
@@ -41,11 +41,11 @@ export default class ReactSmartModal extends Component {
     componentDidMount() {
         this.renderChildren(this.props.open);
 
-        window.addEventListener('keydown', this.onKeyDown, true);
+        window.addEventListener('keydown', this.onKeyPress, true);
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.onKeyDown, true);
+        window.removeEventListener('keydown', this.onKeyPress, true);
 
         this.renderChildren();
     }
@@ -104,9 +104,16 @@ export default class ReactSmartModal extends Component {
         this.renderChildren(false);
     };
 
-    onKeyDown = (event) => {
-        if (event.keyCode === this.props.shortcut && event.ctrlKey) {
-            this.openModal();
+    onKeyPress = (event) => {
+        let { shortcut } = this.props;
+        let key = 'Key' + shortcut.toUpperCase();
+
+        if(shortcut) {
+            event.preventDefault();
+
+            if (event.code === key && event.ctrlKey) {
+                this.openModal();
+            }
         }
     };
 
@@ -193,13 +200,13 @@ class ReactSmartModalContainer extends Component {
                     translateY: spring(-200, { stiffness: 280, damping: 30, precision: 400 }),
                 })}
                 willEnter={() => ({
-                    opacity: 0,
+                    opacity   : 0,
                     translateY: -200
                 })}
                 styles={this.state.items.map(item => ({
                     key  : item.key,
                     style: {
-                        opacity: spring(item.opacity, { stiffness: 270, damping: 30, precision: 0.01 }),
+                        opacity   : spring(item.opacity, { stiffness: 270, damping: 30, precision: 0.01 }),
                         translateY: spring(item.translateY, { stiffness: 270, damping: 30, precision: 2 })
                     },
                 }))}
@@ -254,11 +261,11 @@ class ReactSmartModalBody extends Component {
 
     render() {
         return (
-            <div>
-            <div styleName='react-smart-modal-overlay'
-                 style={{ opacity: this.props.style.opacity }}
-                 onClick={this.props.onOverlayClick}
-            ></div>
+            <div styleName='react-smart-modal-container'>
+                <div styleName='react-smart-modal-overlay'
+                     style={{ opacity: this.props.style.opacity }}
+                     onClick={this.props.onOverlayClick}
+                ></div>
                 <div
                     styleName='react-smart-modal-body'
                     style={{ transform: this.props.style.transform }}
