@@ -4,8 +4,7 @@
   "description": "ProjectTemplate",
   "scripts": {
     "start": "NODE_PATH=./public/ node public/backend/index.js",
-    "lint": "eslint frontend",
-    "postinstall": "npm i && gulp && webpack"
+    "lint": "eslint frontend"
   },
   "main": "index.html",
   "author": "Boris Soldovskij",
