@@ -109,9 +109,9 @@ export default class ReactSmartModal extends Component {
         let key = 'Key' + shortcut.toUpperCase();
 
         if(shortcut) {
-            event.preventDefault();
-
             if (event.code === key && event.ctrlKey) {
+                event.preventDefault();
+
                 this.openModal();
             }
         }
