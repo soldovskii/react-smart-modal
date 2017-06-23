@@ -1,3 +1,7 @@
+/**
+ * Modal not rendered inplace. Modal render to end of the body.
+ */
+
 import CSSModules from 'react-css-modules';
 
 import React, { Component } from 'react';
@@ -25,7 +29,8 @@ export default class ReactSmartModal extends Component {
         open    : PropTypes.bool.isRequired,
         onOpen  : PropTypes.func,
         onClose : PropTypes.func,
-        shortcut: PropTypes.string
+        shortcut: PropTypes.string,
+        modalID : PropTypes.string
     };
 
     static defaultProps = {
@@ -42,12 +47,16 @@ export default class ReactSmartModal extends Component {
         this.renderChildren(this.props.open);
 
         window.addEventListener('keydown', this.onKeyPress, true);
+        window.addEventListener('hashchange', this.checkHash, false);
+
+        this.checkHash();
     }
 
     componentWillUnmount() {
         window.removeEventListener('keydown', this.onKeyPress, true);
+        window.removeEventListener('hashchange', this.checkHash, false);
 
-        this.renderChildren();
+        this.renderChildren(false);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -101,19 +110,41 @@ export default class ReactSmartModal extends Component {
     };
 
     closeModal = () => {
+        this.clearHash();
+
+
         this.renderChildren(false);
     };
 
     onKeyPress = (event) => {
         let { shortcut } = this.props;
-        let key = 'Key' + shortcut.toUpperCase();
+        let key          = 'Key' + shortcut.toUpperCase();
 
-        if(shortcut) {
+        if (shortcut) {
             if (event.code === key && event.ctrlKey) {
                 event.preventDefault();
 
                 this.openModal();
             }
+        }
+    };
+
+    checkHash = () => {
+        let { modalID } = this.props;
+
+        if (modalID && location.hash === '#' + modalID) {
+            this.openModal();
+        }
+    };
+
+    clearHash = () => {
+        let { modalID } = this.props;
+
+        if (modalID && location.hash === '#' + modalID) {
+            //location.hash = '';
+
+            // Use history because after set empty string to location.hash hash will stay in url
+            history.pushState('', document.title, window.location.pathname);
         }
     };
 
@@ -227,7 +258,7 @@ class ReactSmartModalContainer extends Component {
                                     onBodyClick={this.onBodyClick}
                                     {...this.props}
                                 >
-                                    <div className="label">{this.props.children}</div>
+                                    {this.props.children}
                                 </ReactSmartModalBody>
                             );
                         })}
