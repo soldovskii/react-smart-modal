@@ -7,7 +7,7 @@ import globalStore from 'common/modules/globalStore';
 
 import locale from 'frontend/modules/localization';
 
-import ReactSmartModal from 'common/components/react-smart-modal';
+import ReactSmartModal from 'frontend/$common/components/react-smart-modal';
 
 const _ = locale.get.bind(locale, require('./Main.json'));
 
