@@ -4,7 +4,8 @@
   "description": "ProjectTemplate",
   "scripts": {
     "start": "NODE_PATH=./public/ node public/backend/index.js",
-    "lint": "eslint frontend"
+    "lint": "eslint frontend",
+    "postinstall": "gulp && webpack"
   },
   "engines": {
     "node": "7.x"
