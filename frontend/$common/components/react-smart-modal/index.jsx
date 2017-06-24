@@ -197,6 +197,9 @@ class ReactSmartModalContainer extends Component {
         };
     }
 
+    /**
+     * This method will called when ReactSmartModal component mounted this component
+     */
     componentDidMount() {
         this.setState({
             items: [{ key: 'modal', opacity: 1, translateY: 0 }]
@@ -209,6 +212,10 @@ class ReactSmartModalContainer extends Component {
         }
     }
 
+    /**
+     * This method will called after ReactSmartModal component will unmount this component
+     * For trigger that queue ReactSmartModalBody called closeModal on own componentWillUnmount
+     */
     componentWillUnmount() {
         window.removeEventListener('keydown', this.onKeyDown, true);
 
@@ -310,6 +317,17 @@ class ReactSmartModalBody extends Component {
         super(props);
     }
 
+    /**
+     * This method will called after ReactMotion animation started.
+     */
+    componentDidMount() {
+
+    }
+
+    /**
+     * This method will called after ReactMotion animation completed.
+     * Then manual call closeModal on ReactSmartModal component for next modal lifecycle actions
+     */
     componentWillUnmount() {
         setTimeout(this.props.closeModal.bind(this, true), 0);
     }
