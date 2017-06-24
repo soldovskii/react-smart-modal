@@ -66,7 +66,7 @@ export default class Main extends Component {
                     }}
                     shortcut='g'
                     modalID='login'
-                    isAnimated={false}
+                    isAnimated={true}
                 >
                     <form className="extra-form" onSubmit={(event) => event.preventDefault()}>
                         <h2> Login Form </h2>
@@ -95,7 +95,7 @@ export default class Main extends Component {
                         console.log('onClose');
                         this.setState({ alertModalIsOpen: false });
                     }}
-                    isAnimated={false}
+                    isAnimated={true}
                 >
                     <form className="extra-form" onSubmit={(event) => event.preventDefault()}>
                         <h1>Такой пользователь не существует</h1>
