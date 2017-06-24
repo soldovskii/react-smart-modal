@@ -62,9 +62,11 @@ export default class Main extends Component {
                     }}
                     onClose={() => {
                         console.log('onClose');
+                        this.setState({ loginModalIsOpen: false });
                     }}
                     shortcut='g'
                     modalID='login'
+                    isAnimated={true}
                 >
                     <form className="extra-form" onSubmit={(event) => event.preventDefault()}>
                         <h2> Login Form </h2>
@@ -91,6 +93,7 @@ export default class Main extends Component {
                     }}
                     onClose={() => {
                         console.log('onClose');
+                        this.setState({ alertModalIsOpen: false });
                     }}
                     isAnimated={true}
                 >

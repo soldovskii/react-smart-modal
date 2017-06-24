@@ -38,6 +38,8 @@ export default class ReactSmartModal extends Component {
         isAnimated: false
     };
 
+    static modalList = [];
+
     constructor(props) {
         super(props);
 
@@ -51,14 +53,14 @@ export default class ReactSmartModal extends Component {
             this.closeModal();
         }
 
-        window.addEventListener('keydown', this.onKeyPress, true);
+        window.addEventListener('keydown', this.onKeyDown, true);
         window.addEventListener('hashchange', this.checkHash, false);
 
         this.checkHash();
     }
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.onKeyPress, true);
+        window.removeEventListener('keydown', this.onKeyDown, true);
         window.removeEventListener('hashchange', this.checkHash, false);
 
         this.closeModal();
@@ -80,12 +82,12 @@ export default class ReactSmartModal extends Component {
         }
 
         if (isOpen) {
-
             this.mountChildrenBody();
+
             this.setHash();
         } else {
-
             this.unmountChildrenBody();
+
             this.clearHash();
         }
     }
@@ -101,7 +103,7 @@ export default class ReactSmartModal extends Component {
             this,
             <ReactSmartModalContainer
                 {...this.props}
-                ref={(modal) => this.modal = modal}
+                ref={this.addToCollector}
                 closeModal={this.closeModal}
             />,
             this.modalContainer);
@@ -109,15 +111,30 @@ export default class ReactSmartModal extends Component {
 
     unmountChildrenBody() {
         if (this.modalContainer) {
-            document.body.classList.remove('react-smart-modal--open');
-
-            document.body.removeChild(this.modalContainer);
+            this.delFromCollector();
 
             unmountComponentAtNode(this.modalContainer);
+
+            document.body.classList.remove('react-smart-modal--open');
+            document.body.removeChild(this.modalContainer);
 
             delete this.modalContainer;
         }
     }
+
+    addToCollector = (modal) => {
+        if (modal) {
+            this.modal = modal;
+            ReactSmartModal.modalList.push(modal);
+        }
+    };
+
+    delFromCollector = () => {
+        if (this.modal) {
+            delete this.modal;
+            ReactSmartModal.modalList.pop();
+        }
+    };
 
     openModal = () => {
         this.renderChildren(true);
@@ -127,8 +144,10 @@ export default class ReactSmartModal extends Component {
         this.renderChildren(false);
     };
 
-    onKeyPress = (event) => {
+    onKeyDown = (event) => {
         let { shortcut } = this.props;
+        let { modalList } = ReactSmartModal;
+
         if (shortcut) {
             let key = 'Key' + shortcut.toUpperCase();
 
@@ -136,6 +155,14 @@ export default class ReactSmartModal extends Component {
                 event.preventDefault();
 
                 this.openModal();
+            }
+        }
+
+        if (event.keyCode === 27) { // 27 - ESC_CODE
+            event.preventDefault();
+
+            if (this.modal === modalList[modalList.length - 1]) {
+                this.modal.requestCloseModal();
             }
         }
     };
@@ -201,8 +228,6 @@ class ReactSmartModalContainer extends Component {
             items: [{ key: 'modal', style: { opacity: 1, translateY: 0 } }]
         });
 
-        window.addEventListener('keydown', this.onKeyDown, true);
-
         if (this.props.onOpen) {
             this.props.onOpen();
         }
@@ -213,8 +238,6 @@ class ReactSmartModalContainer extends Component {
      * For trigger that queue ReactSmartModalBody called closeModal on own componentWillUnmount
      */
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.onKeyDown, true);
-
         if (this.props.onClose) {
             this.props.onClose();
         }
@@ -240,14 +263,6 @@ class ReactSmartModalContainer extends Component {
 
     onBodyClick = (event) => {
         event.stopPropagation();
-    };
-
-    onKeyDown = (event) => {
-        if (event.keyCode === 27) { // 27 - ESC_CODE
-            event.preventDefault();
-
-            this.requestCloseModal();
-        }
     };
 
     renderAsStatic() {
