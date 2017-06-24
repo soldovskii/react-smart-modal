@@ -12,11 +12,12 @@ import { renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom/li
 /**
  * Container component. Represent API for use it:
  * props: {
- *  open: the flag is open or close modal
+ *  isAnimated: if true modal close and open precess will animated
+ *  open: the flag is open or close modal, default true
  *  onOpen: callback - call after modal opened
  *  onClose: callback - call after modal closed
  *  shortcut: keyCode for open modal if Control is pressed
- * }
+  * }
  *
  * openModal: manual open, example: by ref
  * closeModal: manual close, example: by ref
@@ -25,17 +26,17 @@ import { renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom/li
  */
 export default class ReactSmartModal extends Component {
     static propTypes = {
+        isAnimated: PropTypes.bool,
         open      : PropTypes.bool,
         onOpen    : PropTypes.func,
         onClose   : PropTypes.func,
         shortcut  : PropTypes.string,
-        modalID   : PropTypes.string,
-        isAnimated: PropTypes.bool
+        modalID   : PropTypes.string
     };
 
     static defaultProps = {
-        open      : false,
-        isAnimated: false
+        isAnimated: false,
+        open      : false
     };
 
     static modalList = [];
@@ -145,7 +146,7 @@ export default class ReactSmartModal extends Component {
     };
 
     onKeyDown = (event) => {
-        let { shortcut } = this.props;
+        let { shortcut }  = this.props;
         let { modalList } = ReactSmartModal;
 
         if (shortcut) {
