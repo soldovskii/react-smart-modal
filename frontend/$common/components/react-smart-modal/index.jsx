@@ -40,11 +40,15 @@ export default class ReactSmartModal extends Component {
     constructor(props) {
         super(props);
 
-        this.currentState = null;
+        this.currentState = this.props.open;
     }
 
     componentDidMount() {
-        this.renderChildren(this.props.open);
+        if (this.props.open) {
+            this.openModal();
+        } else {
+            this.closeModal();
+        }
 
         window.addEventListener('keydown', this.onKeyPress, true);
         window.addEventListener('hashchange', this.checkHash, false);
@@ -56,11 +60,15 @@ export default class ReactSmartModal extends Component {
         window.removeEventListener('keydown', this.onKeyPress, true);
         window.removeEventListener('hashchange', this.checkHash, false);
 
-        this.renderChildren(false);
+        this.closeModal();
     }
 
     componentWillReceiveProps(nextProps) {
-        this.renderChildren(nextProps.open);
+        if (nextProps.open) {
+            this.openModal();
+        } else {
+            this.closeModal();
+        }
     }
 
     renderChildren(isOpen) {
@@ -71,8 +79,12 @@ export default class ReactSmartModal extends Component {
         }
 
         if (isOpen) {
+            this.setHash();
+
             this.mountChildrenBody();
         } else {
+            this.clearHash();
+
             this.unmountChildrenBody();
         }
     }
@@ -110,9 +122,6 @@ export default class ReactSmartModal extends Component {
     };
 
     closeModal = () => {
-        this.clearHash();
-
-
         this.renderChildren(false);
     };
 
@@ -134,6 +143,8 @@ export default class ReactSmartModal extends Component {
 
         if (modalID && location.hash === '#' + modalID) {
             this.openModal();
+        } else {
+            this.closeModal();
         }
     };
 
@@ -145,6 +156,14 @@ export default class ReactSmartModal extends Component {
 
             // Use history because after set empty string to location.hash hash will stay in url
             history.pushState('', document.title, window.location.pathname);
+        }
+    };
+
+    setHash = () => {
+        let { modalID } = this.props;
+
+        if (modalID && location.hash !== '#' + modalID) {
+            history.pushState('', document.title, window.location.pathname + '#' + modalID);
         }
     };
 
@@ -228,7 +247,7 @@ class ReactSmartModalContainer extends Component {
             <TransitionMotion
                 willLeave={() => ({
                     opacity   : spring(0, { stiffness: 270, damping: 30, precision: 2 }),
-                    translateY: spring(-200, { stiffness: 280, damping: 30, precision: 400 }),
+                    translateY: spring(-200, { stiffness: 280, damping: 30, precision: 400 })
                 })}
                 willEnter={() => ({
                     opacity   : 0,
@@ -239,7 +258,7 @@ class ReactSmartModalContainer extends Component {
                     style: {
                         opacity   : spring(item.opacity, { stiffness: 270, damping: 30, precision: 0.01 }),
                         translateY: spring(item.translateY, { stiffness: 270, damping: 30, precision: 2 })
-                    },
+                    }
                 }))}
             >
 
@@ -279,7 +298,7 @@ class ReactSmartModalBody extends Component {
         onCloseButtonClick: PropTypes.func.isRequired,
         onOverlayClick    : PropTypes.func.isRequired,
         onBodyClick       : PropTypes.func.isRequired,
-        closeModal        : PropTypes.func.isRequired,
+        closeModal        : PropTypes.func.isRequired
     };
 
     constructor(props) {
