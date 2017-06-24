@@ -100,6 +100,7 @@ export default class ReactSmartModal extends Component {
             this,
             <ReactSmartModalContainer
                 {...this.props}
+                ref={(modal) => this.modal = modal}
                 closeModal={this.closeModal}
             />,
             this.modalContainer);
@@ -121,15 +122,19 @@ export default class ReactSmartModal extends Component {
         this.renderChildren(true);
     };
 
-    closeModal = () => {
-        this.renderChildren(false);
+    closeModal = (immediateClose = false) => {
+        if (immediateClose) {
+            this.renderChildren(false);
+        } else {
+            if (this.modal) this.modal.requestCloseModal();
+        }
     };
 
     onKeyPress = (event) => {
         let { shortcut } = this.props;
-        let key          = 'Key' + shortcut.toUpperCase();
-
         if (shortcut) {
+            let key = 'Key' + shortcut.toUpperCase();
+
             if (event.code === key && event.ctrlKey) {
                 event.preventDefault();
 
@@ -306,7 +311,7 @@ class ReactSmartModalBody extends Component {
     }
 
     componentWillUnmount() {
-        setTimeout(this.props.closeModal);
+        setTimeout(this.props.closeModal.bind(this, true), 0);
     }
 
     render() {

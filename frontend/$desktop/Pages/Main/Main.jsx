@@ -21,20 +21,21 @@ export default class Main extends Component {
         let { mainArticles }   = Main || {};
 
         this.state = {
-            products    : products,
-            mainArticles: mainArticles,
-            modalIsOpen : false
+            products        : products,
+            mainArticles    : mainArticles,
+            loginModalIsOpen: false,
+            alertModalIsOpen: false
         };
     }
 
     render() {
-        let { modalIsOpen } = this.state;
+        let { loginModalIsOpen, alertModalIsOpen } = this.state;
 
         return (
             <div styleName="page-main">
                 <Helmet titleTemplate={`${_('company_name')} - %s`} title={_('page_main')}/>
 
-                <div className="plain_button" onClick={() => this.setState({ modalIsOpen: true })}>click me</div>
+                <div className="plain_button" onClick={() => this.setState({ loginModalIsOpen: true })}>click me</div>
 
                 <p>
                     Многие думают, что Lorem Ipsum - взятый с потолка псевдо-латинский набор слов, но это не совсем так.
@@ -55,7 +56,7 @@ export default class Main extends Component {
                 </p>
 
                 <ReactSmartModal
-                    open={modalIsOpen}
+                    open={loginModalIsOpen}
                     onOpen={() => {
                         console.log('onOpen');
                     }}
@@ -65,19 +66,37 @@ export default class Main extends Component {
                     shortcut='g'
                     modalID='login'
                 >
-                    <form className="extra-form">
+                    <form className="extra-form" onSubmit={(event) => event.preventDefault()}>
                         <h2> Login Form </h2>
                         <div className="input-container">
                             <label htmlFor="login">Login</label>
                             <input id="login" type="text"/>
                         </div>
+
                         <div className="input-container">
                             <label htmlFor="password">Password</label>
                             <input id="password" type="password"/>
                         </div>
 
                         <div className="button-container">
-                            <button type="submit">LOGIN</button>
+                            <button type="submit" onClick={() => this.setState({ alertModalIsOpen: true })}>LOGIN</button>
+                        </div>
+                    </form>
+                </ReactSmartModal>
+
+                <ReactSmartModal
+                    open={alertModalIsOpen}
+                    onOpen={() => {
+                        console.log('onOpen');
+                    }}
+                    onClose={() => {
+                        console.log('onClose');
+                    }}
+                >
+                    <form className="extra-form" onSubmit={(event) => event.preventDefault()}>
+                        <h1>Такой пользователь не существует</h1>
+                        <div className="button-container">
+                            <button type="submit" onClick={() => this.setState({ alertModalIsOpen: false })}>CLOSE</button>
                         </div>
                     </form>
                 </ReactSmartModal>
