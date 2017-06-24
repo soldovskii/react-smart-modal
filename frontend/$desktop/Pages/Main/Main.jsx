@@ -92,6 +92,7 @@ export default class Main extends Component {
                     onClose={() => {
                         console.log('onClose');
                     }}
+                    isAnimated={true}
                 >
                     <form className="extra-form" onSubmit={(event) => event.preventDefault()}>
                         <h1>Такой пользователь не существует</h1>

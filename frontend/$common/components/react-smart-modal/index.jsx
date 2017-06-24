@@ -198,7 +198,7 @@ class ReactSmartModalContainer extends Component {
      */
     componentDidMount() {
         this.setState({
-            items: [{ key: 'modal', styles: { opacity: 1, translateY: 0 } }]
+            items: [{ key: 'modal', style: { opacity: 1, translateY: 0 } }]
         });
 
         window.addEventListener('keydown', this.onKeyDown, true);
@@ -254,30 +254,20 @@ class ReactSmartModalContainer extends Component {
         let item = this.state.items[0];
 
         if (item) {
-            return <ReactSmartModalBody
-
-                style={{
-                    opacity  : item.styles.opacity,
-                    transform: `translate(-50%, ${item.styles.translateY}%)`
-                }}
-                onCloseButtonClick={this.onCloseButtonClick}
-                onOverlayClick={this.onOverlayClick}
-                onBodyClick={this.onBodyClick}
-                {...this.props}
-            >
-                {this.props.children}
-            </ReactSmartModalBody>;
+            return this.renderBody(item);
         } else {
             return null;
         }
     }
 
     renderAsAnimated() {
+        let preset = { stiffness: 270, damping: 30 };
+
         return (
             <TransitionMotion
                 willLeave={() => ({
-                    opacity   : spring(0, { stiffness: 270, damping: 30, precision: 2 }),
-                    translateY: spring(-200, { stiffness: 280, damping: 30, precision: 400 })
+                    opacity   : spring(0, { ...preset, precision: 2 }),
+                    translateY: spring(-200, { ...preset, precision: 400 })
                 })}
                 willEnter={() => ({
                     opacity   : 0,
@@ -286,35 +276,35 @@ class ReactSmartModalContainer extends Component {
                 styles={this.state.items.map(item => ({
                     key  : item.key,
                     style: {
-                        opacity   : spring(item.styles.opacity, { stiffness: 270, damping: 30, precision: 0.01 }),
-                        translateY: spring(item.styles.translateY, { stiffness: 270, damping: 30, precision: 2 })
+                        opacity   : spring(item.style.opacity, { ...preset, precision: 0.01 }),
+                        translateY: spring(item.style.translateY, { ...preset, precision: 2 })
                     }
                 }))}
             >
 
                 {interpolatedStyles =>
                     <div>
-                        {interpolatedStyles.map(config => {
-                            return (
-                                <ReactSmartModalBody
-                                    key={config.key}
-                                    style={{
-                                        opacity  : config.style.opacity,
-                                        transform: `translate(-50%, ${config.style.translateY}%)`
-                                    }}
-                                    onCloseButtonClick={this.onCloseButtonClick}
-                                    onOverlayClick={this.onOverlayClick}
-                                    onBodyClick={this.onBodyClick}
-                                    {...this.props}
-                                >
-                                    {this.props.children}
-                                </ReactSmartModalBody>
-                            );
-                        })}
+                        {interpolatedStyles.map(config => this.renderBody(config))}
                     </div>
                 }
             </TransitionMotion>
         );
+    }
+
+    renderBody(config) {
+        return <ReactSmartModalBody
+            key={config.key}
+            style={{
+                opacity  : config.style.opacity,
+                transform: `translate(-50%, ${config.style.translateY}%)`
+            }}
+            onCloseButtonClick={this.onCloseButtonClick}
+            onOverlayClick={this.onOverlayClick}
+            onBodyClick={this.onBodyClick}
+            {...this.props}
+        >
+            {this.props.children}
+        </ReactSmartModalBody>;
     }
 
     render() {
