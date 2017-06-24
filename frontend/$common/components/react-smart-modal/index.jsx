@@ -23,18 +23,19 @@ import { renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom/li
  *
  * Also component listen keyboard events to close them or open if shortcut combination is set
  */
-@CSSModules(require('./styles.scss'))
 export default class ReactSmartModal extends Component {
     static propTypes = {
-        open    : PropTypes.bool.isRequired,
-        onOpen  : PropTypes.func,
-        onClose : PropTypes.func,
-        shortcut: PropTypes.string,
-        modalID : PropTypes.string
+        open      : PropTypes.bool,
+        onOpen    : PropTypes.func,
+        onClose   : PropTypes.func,
+        shortcut  : PropTypes.string,
+        modalID   : PropTypes.string,
+        isAnimated: PropTypes.bool
     };
 
     static defaultProps = {
-        open: false
+        open      : false,
+        isAnimated: false
     };
 
     constructor(props) {
@@ -79,13 +80,13 @@ export default class ReactSmartModal extends Component {
         }
 
         if (isOpen) {
-            this.setHash();
 
             this.mountChildrenBody();
+            this.setHash();
         } else {
-            this.clearHash();
 
             this.unmountChildrenBody();
+            this.clearHash();
         }
     }
 
@@ -122,12 +123,8 @@ export default class ReactSmartModal extends Component {
         this.renderChildren(true);
     };
 
-    closeModal = (immediateClose = false) => {
-        if (immediateClose) {
-            this.renderChildren(false);
-        } else {
-            if (this.modal) this.modal.requestCloseModal();
-        }
+    closeModal = () => {
+        this.renderChildren(false);
     };
 
     onKeyPress = (event) => {
@@ -181,7 +178,6 @@ export default class ReactSmartModal extends Component {
  * Component Controller. Animation wrapper of ReactSmartModalBody
  * Controls the display of modal. Listen events for send closeRequest to ReactSmartModal
  */
-@CSSModules(require('./styles.scss'))
 class ReactSmartModalContainer extends Component {
     static propTypes = {
         closeModal: PropTypes.func.isRequired,
@@ -202,7 +198,7 @@ class ReactSmartModalContainer extends Component {
      */
     componentDidMount() {
         this.setState({
-            items: [{ key: 'modal', opacity: 1, translateY: 0 }]
+            items: [{ key: 'modal', styles: { opacity: 1, translateY: 0 } }]
         });
 
         window.addEventListener('keydown', this.onKeyDown, true);
@@ -254,7 +250,29 @@ class ReactSmartModalContainer extends Component {
         }
     };
 
-    render() {
+    renderAsStatic() {
+        let item = this.state.items[0];
+
+        if (item) {
+            return <ReactSmartModalBody
+
+                style={{
+                    opacity  : item.styles.opacity,
+                    transform: `translate(-50%, ${item.styles.translateY}%)`
+                }}
+                onCloseButtonClick={this.onCloseButtonClick}
+                onOverlayClick={this.onOverlayClick}
+                onBodyClick={this.onBodyClick}
+                {...this.props}
+            >
+                {this.props.children}
+            </ReactSmartModalBody>;
+        } else {
+            return null;
+        }
+    }
+
+    renderAsAnimated() {
         return (
             <TransitionMotion
                 willLeave={() => ({
@@ -268,8 +286,8 @@ class ReactSmartModalContainer extends Component {
                 styles={this.state.items.map(item => ({
                     key  : item.key,
                     style: {
-                        opacity   : spring(item.opacity, { stiffness: 270, damping: 30, precision: 0.01 }),
-                        translateY: spring(item.translateY, { stiffness: 270, damping: 30, precision: 2 })
+                        opacity   : spring(item.styles.opacity, { stiffness: 270, damping: 30, precision: 0.01 }),
+                        translateY: spring(item.styles.translateY, { stiffness: 270, damping: 30, precision: 2 })
                     }
                 }))}
             >
@@ -297,6 +315,14 @@ class ReactSmartModalContainer extends Component {
                 }
             </TransitionMotion>
         );
+    }
+
+    render() {
+        if (this.props.isAnimated) {
+            return this.renderAsAnimated();
+        } else {
+            return this.renderAsStatic();
+        }
     }
 }
 
@@ -329,7 +355,7 @@ class ReactSmartModalBody extends Component {
      * Then manual call closeModal on ReactSmartModal component for next modal lifecycle actions
      */
     componentWillUnmount() {
-        setTimeout(this.props.closeModal.bind(this, true), 0);
+        setTimeout(this.props.closeModal, 0);
     }
 
     render() {
