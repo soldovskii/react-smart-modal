@@ -9,8 +9,8 @@ Component located at [react-smart-modal/frontend/$common/components/react-smart-
 * isAnimated: if true modal close and open precess will animated
 * open: the flag is open or close modal, default true
 * onOpen: callback - call after modal opened
-*  onClose: callback - call after modal closed
-*  shortcut: keyCode for open modal if Control is pressed
+* onClose: callback - call after modal closed
+* shortcut: keyCode for open modal if Control is pressed
 
 ### methods
 * openModal: manual open, example: by ref
