@@ -129,7 +129,7 @@ app.set('view engine', 'ejs');
 
 //endregion
 
-const serverRendering = (req, res, build) => {
+const serverRendering = (req, res, build, head) => {
     let { isMobile = false } = req.useragent;
 
     let serverProps = {
@@ -157,6 +157,7 @@ const serverRendering = (req, res, build) => {
                     );
 
                     res.render('index', {
+                        head         : head,
                         body         : body,
                         build        : build,
                         isMobile     : isMobile,
@@ -177,7 +178,7 @@ const serverRendering = (req, res, build) => {
     });
 };
 
-const staticRender = (req, res, build) => {
+const staticRender = (req, res, build, head) => {
     let { isMobile = false } = req.useragent;
 
     let serverProps = {
@@ -185,6 +186,7 @@ const staticRender = (req, res, build) => {
     };
 
     res.render('index', {
+        head       : head,
         build      : build,
         isMobile   : isMobile,
         styles     : generateMediaQueryLinks(mediaQueryConfig, build),
@@ -193,12 +195,13 @@ const staticRender = (req, res, build) => {
 };
 
 app.get('*', (req, res) => {
-    let build = DEBUG ? +new Date() : BUILD || '';
+    let build  = DEBUG ? +new Date() : BUILD || '';
+    const head = Helmet.rewind();
 
     if (appConfig.enabledServerRendering) {
-        serverRendering(req, res, build);
+        serverRendering(req, res, build, head);
     } else {
-        staticRender(req, res, build);
+        staticRender(req, res, build, head);
     }
 });
 
