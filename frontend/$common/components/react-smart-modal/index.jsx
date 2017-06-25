@@ -98,7 +98,10 @@ export default class ReactSmartModal extends Component {
         this.modalContainer.className = 'react-smart-modal';
 
         document.body.appendChild(this.modalContainer);
-        document.body.classList.add('react-smart-modal--open');
+
+        if (ReactSmartModal.modalList.length === 0) {
+            document.body.classList.add('react-smart-modal--open');
+        }
 
         renderSubtreeIntoContainer(
             this,
@@ -116,8 +119,11 @@ export default class ReactSmartModal extends Component {
 
             unmountComponentAtNode(this.modalContainer);
 
-            document.body.classList.remove('react-smart-modal--open');
             document.body.removeChild(this.modalContainer);
+
+            if (ReactSmartModal.modalList.length === 0) {
+                document.body.classList.remove('react-smart-modal--open');
+            }
 
             delete this.modalContainer;
         }
