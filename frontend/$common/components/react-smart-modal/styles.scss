@@ -10,7 +10,6 @@
   right: 0;
   bottom: 0;
   overflow-y: auto;
-  display: block;
 }
 
 .react-smart-modal-overlay {
@@ -20,7 +19,6 @@
   right: 0;
   bottom: 0;
   background-color: rgba(252, 252, 252, 0.7);
-  overflow-y: auto;
 }
 
 .react-smart-modal-body {
@@ -33,6 +31,8 @@
   overflow: hidden;
   outline: none;
   padding: 30px;
+  margin-top: 30px;
+  margin-bottom: 30px;
   box-shadow: rgba(0, 0, 0, 0.1) 0 16px 60px 20px;
   box-sizing: border-box;
   border-radius: 10px;
