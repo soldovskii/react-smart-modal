@@ -68,7 +68,9 @@ export default class Main extends Component {
                     modalID='login'
                     isAnimated={true}
                 >
-                    <form className="extra-form" onSubmit={(event) => event.preventDefault()}>
+                    <form className="extra-form login-form"
+                          onSubmit={(event) => event.preventDefault()}
+                    >
                         <h2> Login Form </h2>
                         <div className="input-container">
                             <label htmlFor="login">Login</label>
