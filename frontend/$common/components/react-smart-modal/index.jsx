@@ -236,7 +236,7 @@ class ReactSmartModalContainer extends Component {
      */
     componentDidMount() {
         this.setState({
-            items: [{ key: 'modal', style: { opacity: 1, translateY: 0 } }]
+            items: [{ key: 'modal', style: { opacity: 1, translateY: -50 } }]
         });
 
         if (this.props.onOpen) {
@@ -293,11 +293,11 @@ class ReactSmartModalContainer extends Component {
             <TransitionMotion
                 willLeave={() => ({
                     opacity   : spring(0, { ...preset, precision: 2 }),
-                    translateY: spring(-200, { ...preset, precision: 400 })
+                    translateY: spring(-150, { ...preset, precision: 400 })
                 })}
                 willEnter={() => ({
                     opacity   : 0,
-                    translateY: -200
+                    translateY: -150
                 })}
                 styles={this.state.items.map(item => ({
                     key  : item.key,
