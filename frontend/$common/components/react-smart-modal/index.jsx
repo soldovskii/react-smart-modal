@@ -9,6 +9,8 @@ import PropTypes from 'prop-types';
 import { TransitionMotion, spring } from 'react-motion';
 import { renderSubtreeIntoContainer, unmountComponentAtNode } from 'react-dom/lib/ReactMount';
 
+import { ModalHelper } from './helper';
+
 /**
  * Container component. Represent API for use it:
  * props: {
@@ -100,6 +102,7 @@ export default class ReactSmartModal extends Component {
         document.body.appendChild(this.modalContainer);
 
         if (ReactSmartModal.modalList.length === 0) {
+            ModalHelper.openModal();
             document.body.classList.add('react-smart-modal--open');
         }
 
@@ -122,6 +125,7 @@ export default class ReactSmartModal extends Component {
             document.body.removeChild(this.modalContainer);
 
             if (ReactSmartModal.modalList.length === 0) {
+                ModalHelper.closeModal();
                 document.body.classList.remove('react-smart-modal--open');
             }
 
