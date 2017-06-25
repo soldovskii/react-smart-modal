@@ -25,7 +25,7 @@ const babelConf = {
         [
             'css-modules-transform', {
                 'preprocessCss'     : './loaders/sass-loader.js',
-                'generateScopedName': DEBUG ? '[local]--[hash:8]' : '[hash:8]',
+                'generateScopedName': DEBUG ? '[local]--[hash:8]' : '[hash:base64]',
                 'extensions'        : ['.css', '.scss']
             },
             'babel-plugin-transform-require-ignore', {
