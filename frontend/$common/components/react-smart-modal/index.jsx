@@ -66,7 +66,7 @@ export default class ReactSmartModal extends Component {
         window.removeEventListener('keydown', this.onKeyDown, true);
         window.removeEventListener('hashchange', this.checkHash, false);
 
-        this.closeModal();
+        this.renderChildren(false);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -175,7 +175,7 @@ export default class ReactSmartModal extends Component {
             event.preventDefault();
 
             if (this.modal === modalList[modalList.length - 1]) {
-                this.modal.requestCloseModal();
+                this.closeModal();
             }
         }
     };
