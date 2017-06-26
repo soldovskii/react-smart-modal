@@ -46,7 +46,7 @@ export default class ReactSmartModal extends Component {
     constructor(props) {
         super(props);
 
-        this.currentState = this.props.open;
+        this.currentState = null;
     }
 
     componentDidMount() {
