@@ -11,7 +11,9 @@ Component located at [react-smart-modal/frontend/$common/components/react-smart-
 * onOpen: callback - call after modal opened
 * onClose: callback - call after modal closed
 * shortcut: keyCode for open modal if Control is pressed
-* modalID: used for hash in URL. **If set need onOpen callback to synchronize open { true|false } state in parent component**
+* modalID: used for hash in URL. 
+
+**If modalID is set need onOpen callback to synchronize open { true|false } state in parent component. Because modal can be opened by set hash to URL. Resp. modal will be open, bur parent component will stay with old state. **
 
 ### methods
 * openModal: manual open, example: by ref
