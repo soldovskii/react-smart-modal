@@ -4,24 +4,28 @@ This is my react-app architecture with related component
 
 Component located at [react-smart-modal/frontend/$common/components/react-smart-modal](https://github.com/soldovskij/react-smart-modal/tree/master/frontend/%24common/components/react-smart-modal)
 
-[Demo on heroku](https://react-smart-modal.herokuapp.com/)
+Demo on heroku [https://react-smart-modal.herokuapp.com/](https://react-smart-modal.herokuapp.com/)
 
 ### Props
-* isAnimated: if true modal close and open precess will animated
-* open: the flag is open or close modal, default true
-* onOpen: callback - call after modal opened
-* onClose: callback - call after modal closed
-* shortcut: keyCode for open modal if Control is pressed
-* modalID: used for hash in URL. 
+| Key            | Description                                   | Default   | Required | Type   |
+| :------------- |:----------------------------------------------------|----------:|---------:|--------:
+| open           | the flag is open or close modal, default true       | false     |true      |bool    |
+| onOpen         | callback - call after modal opened                  | -         | -        |func    |
+| onClose        | callback - call after modal closed                  | -         | -        |func    |
+| shortcut       | keyCode for open modal if Control is pressed        | -         | -        |string  |
+| modalID        | used for hash in URL if set                         | -         | -        |string  |
+| isAnimated     | if true modal close and open precess will animated | false     | -        |bool    |
 
 ### Important
 > **If modalID or shorcut is set need onOpen callback** to synchronize open state { true|false } in parent component. Because modal can  be opened by set hash to URL or press shortcut. Resp. modal will be open, but parent component will stay with old state.
+
+> Also component listen keyboard events to close them by press ESC or open if shortcut combination is set.
 
 ### Methods
 * openModal: manual open, example: by ref
 * closeModal: manual close, example: by ref
 
-Also component listen keyboard events to close them or open if shortcut combination is setgithub
+
 
 ### Example
 
