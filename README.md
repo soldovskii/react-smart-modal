@@ -15,7 +15,7 @@ Component located at [react-smart-modal/frontend/$common/components/react-smart-
 * modalID: used for hash in URL. 
 
 #### important
-> **If modalID or shorcut is set need onOpen callback** to synchronize open state { true|false } in parent component. Because modal can > be opened by set hash to URL or press shortcut. Resp. modal will be open, but parent component will stay with old state.
+> **If modalID or shorcut is set need onOpen callback** to synchronize open state { true|false } in parent component. Because modal can  be opened by set hash to URL or press shortcut. Resp. modal will be open, but parent component will stay with old state.
 
 ### methods
 * openModal: manual open, example: by ref
