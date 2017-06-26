@@ -28,12 +28,12 @@ import { ModalHelper } from './helper';
  */
 export default class ReactSmartModal extends Component {
     static propTypes = {
-        isAnimated: PropTypes.bool,
-        open      : PropTypes.bool,
+        open      : PropTypes.bool.required,
         onOpen    : PropTypes.func,
         onClose   : PropTypes.func,
         shortcut  : PropTypes.string,
-        modalID   : PropTypes.string
+        modalID   : PropTypes.string,
+        isAnimated: PropTypes.bool
     };
 
     static defaultProps = {
