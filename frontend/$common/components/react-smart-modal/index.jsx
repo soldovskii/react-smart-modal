@@ -205,7 +205,7 @@ export default class ReactSmartModal extends Component {
         let { modalID } = this.props;
 
         if (modalID && location.hash !== '#' + modalID) {
-            history.pushState('', document.title, window.location.pathname + '#' + modalID);
+            location.hash = modalID;
         }
     };
 

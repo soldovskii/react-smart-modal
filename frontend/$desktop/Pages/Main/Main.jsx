@@ -59,6 +59,7 @@ export default class Main extends Component {
                     open={loginModalIsOpen}
                     onOpen={() => {
                         console.log('onOpen');
+                        this.setState({ loginModalIsOpen: true });
                     }}
                     onClose={() => {
                         console.log('onClose');
