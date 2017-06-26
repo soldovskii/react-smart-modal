@@ -80,7 +80,7 @@ let webpackConfig = {
                                 loader : 'sass-loader',
                                 options: {
                                     sourceMap   : DEBUG,
-                                    includePaths: [path.resolve(__dirname, 'frontend', 'CSS')]
+                                    includePaths: [path.resolve(__dirname, 'frontend', 'css')]
                                 }
                             }
                         ]
@@ -107,10 +107,9 @@ let webpackConfig = {
                     module.context
                     && (
                         module.context.indexOf('node_modules') !== -1
-                        || module.context.indexOf('frontend/modules') !== -1
-                        || module.context.indexOf('common/modules') !== -1
-                        || module.context.indexOf('common/helpers') !== -1
-                        || module.context.indexOf('common/config') !== -1
+                        || module.context.indexOf('modules') !== -1
+                        || module.context.indexOf('common') !== -1
+                        || module.context.indexOf('css') !== -1
                         || module.resource && module.resource.indexOf('localization.json') !== -1
                     )
                 ) {
