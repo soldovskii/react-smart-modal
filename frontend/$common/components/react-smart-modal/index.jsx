@@ -111,7 +111,7 @@ export default class ReactSmartModal extends Component {
             <ReactSmartModalContainer
                 {...this.props}
                 ref={this.addToCollector}
-                closeModal={this.closeModal}
+                closeModal={ () => this.renderChildren(false) }
             />,
             this.modalContainer);
     }
@@ -152,7 +152,9 @@ export default class ReactSmartModal extends Component {
     };
 
     closeModal = () => {
-        this.renderChildren(false);
+        if (this.modal) {
+            this.modal.requestCloseModal();
+        }
     };
 
     onKeyDown = (event) => {
