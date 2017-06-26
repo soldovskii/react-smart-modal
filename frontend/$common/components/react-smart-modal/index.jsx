@@ -28,7 +28,7 @@ import { ModalHelper } from './helper';
  */
 export default class ReactSmartModal extends Component {
     static propTypes = {
-        open      : PropTypes.bool.required,
+        open      : PropTypes.bool.isRequired,
         onOpen    : PropTypes.func,
         onClose   : PropTypes.func,
         shortcut  : PropTypes.string,
@@ -45,6 +45,10 @@ export default class ReactSmartModal extends Component {
 
     constructor(props) {
         super(props);
+
+        if ((props.shortcut || props.modalID) && (!props.onOpen || !props.onClose)) {
+            console.error('If you use shortcut or modalID props you must set also onOpen and onClose callbacks to synchronize parent component state. See info: https://github.com/soldovskij/react-smart-modal/');
+        }
 
         this.currentState = null;
     }
@@ -111,7 +115,7 @@ export default class ReactSmartModal extends Component {
             <ReactSmartModalContainer
                 {...this.props}
                 ref={this.addToCollector}
-                closeModal={ () => this.renderChildren(false) }
+                closeModal={() => this.renderChildren(false)}
             />,
             this.modalContainer);
     }
