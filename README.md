@@ -4,7 +4,7 @@ This is my react-app architecture with related component
 
 Component located at [react-smart-modal/frontend/$common/components/react-smart-modal](https://github.com/soldovskij/react-smart-modal/tree/master/frontend/%24common/components/react-smart-modal)
 
-[Demo on heroku](https://react-smart-modal.herokuapp.com/)
+Demo on heroku [https://react-smart-modal.herokuapp.com/](https://react-smart-modal.herokuapp.com/)
 
 ### Props
 | Key            | Description                                   | Default   | Required | Type   |
