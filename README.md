@@ -7,12 +7,14 @@ Component located at [react-smart-modal/frontend/$common/components/react-smart-
 [Demo on heroku](https://react-smart-modal.herokuapp.com/)
 
 ### Props
-* isAnimated: if true modal close and open precess will animated
-* open: the flag is open or close modal, default true
-* onOpen: callback - call after modal opened
-* onClose: callback - call after modal closed
-* shortcut: keyCode for open modal if Control is pressed
-* modalID: used for hash in URL. 
+| Key            | Description                                   | Default   | Required | Type   |
+| :------------- |:----------------------------------------------------|----------:|---------:|--------:
+| open           | the flag is open or close modal, default true       | false     |true      |bool    |
+| onOpen         | callback - call after modal opened                  | -         | -        |func    |
+| onClose        | callback - call after modal closed                  | -         | -        |func    |
+| shortcut       | keyCode for open modal if Control is pressed        | -         | -        |string  |
+| modalID        | used for hash in URL if set                         | -         | -        |string  |
+| isAnimated     | if true modal close and open precess will animated | false     | -        |bool    |
 
 ### Important
 > **If modalID or shorcut is set need onOpen callback** to synchronize open state { true|false } in parent component. Because modal can  be opened by set hash to URL or press shortcut. Resp. modal will be open, but parent component will stay with old state.
