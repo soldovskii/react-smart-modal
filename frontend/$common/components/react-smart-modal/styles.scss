@@ -23,7 +23,7 @@
 
 .react-smart-modal-body {
   position: absolute;
-  top: 0;
+  top: 10%;
   left: 50%;
   max-width: 100%;
   transform: translate(-50%, 0);
@@ -37,6 +37,10 @@
   box-sizing: border-box;
   border-radius: 10px;
   -webkit-overflow-scrolling: touch;
+
+  @media screen and (max-device-width: 520px) {
+    top: 0;
+  }
 
   &__close-button {
     position: absolute;
