@@ -55,7 +55,7 @@ export default class Main extends Component {
                   isAnimated={true}
               >
                 // content
-              </ReactSmartModal
+              </ReactSmartModal>
             </div>
         );
     }
