@@ -54,6 +54,8 @@ export default class Main extends Component {
                   modalID='login'
                   isAnimated={true}
               >
+                // content
+              </ReactSmartModal
             </div>
         );
     }
