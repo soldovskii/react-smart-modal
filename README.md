@@ -17,7 +17,7 @@ Demo on heroku [https://react-smart-modal.herokuapp.com/](https://react-smart-mo
 | isAnimated     | if true modal close and open precess will animated | false     | -        |bool    |
 
 ### Important
-> **If modalID or shorcut is set need onOpen callback** to synchronize open state { true|false } in parent component. Because modal can  be opened by set hash to URL or press shortcut. Resp. modal will be open, but parent component will stay with old state.
+> **If modalID or shorcut is set need set laso onOpen callback and onClose callback** to synchronize open state { true|false } in parent component. Because modal can  be opened by set hash to URL or press shortcut. Resp. modal will be open, but parent component will stay with old state.
 
 > Also component listen keyboard events to close them by press ESC or open if shortcut combination is set.
 
@@ -54,6 +54,8 @@ export default class Main extends Component {
                   modalID='login'
                   isAnimated={true}
               >
+                // content
+              </ReactSmartModal>
             </div>
         );
     }
