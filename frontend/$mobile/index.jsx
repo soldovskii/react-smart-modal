@@ -5,7 +5,7 @@
 import React     from 'react';
 
 import renderApp from 'frontend/modules/renderApp';
-import globalStore from 'common/modules/globalStore';
+import globalStore from 'common/modules/appData';
 
 import { routes } from './routes';
 

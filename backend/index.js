@@ -2,7 +2,7 @@
  * Created by soldovkij on 08.06.17.
  */
 
-    //region Environment
+//region Environment
 
 const NODE_PATH = process.env.NODE_PATH;
 const NODE_ENV  = process.env.NODE_ENV;
@@ -55,7 +55,7 @@ const { checkMediaQueryConfig, generateMediaQueryLinks } = require('common/helpe
 checkMediaQueryConfig(mediaQueryConfig);
 
 // Common modules
-const globalStore = require('common/modules/globalStore');
+const globalStore = require('common/modules/appData');
 const serverFetch = require('backend/modules/serverFetch');
 
 //endregion

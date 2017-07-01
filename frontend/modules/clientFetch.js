@@ -3,7 +3,7 @@
  */
 
 import { getBulkObject, pageHack, getApiUrl } from 'common/modules/fetchUtils';
-import globalStore from 'common/modules/globalStore';
+import globalStore from 'common/modules/appData';
 
 export function clientFetch(fetch, fetchRules, completeProps, success, fail, componentName, force, chunkCache) {
     let preloadState = globalStore.take('preloadStates') || {};

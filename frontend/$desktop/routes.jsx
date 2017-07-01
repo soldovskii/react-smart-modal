@@ -5,7 +5,7 @@
 import React                           from 'react';
 import { Route, IndexRoute, Redirect } from 'react-router';
 
-import Template               from '../$template';
+import Template               from './template';
 import MainPage               from './Pages/Main/Main';
 
 export const routes = (

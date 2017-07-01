@@ -6,7 +6,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, browserHistory } from 'react-router';
 
-import globalStore from 'common/modules/globalStore';
+import globalStore from 'common/modules/appData';
 
 function onUpdate() {
     let history       = globalStore.take('history', true);

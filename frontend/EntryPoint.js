@@ -4,7 +4,7 @@
  */
 
 // Global Store module
-import globalStore from 'common/modules/globalStore';
+import globalStore from 'common/modules/appData';
 
 // Put into global storage data from server
 if('__PRELOADED_STATES__' in window) {

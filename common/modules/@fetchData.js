@@ -3,7 +3,7 @@
  */
 
 import React, { Component } from 'react';
-import globalStore          from 'common/modules/globalStore';
+import globalStore          from 'common/modules/appData';
 
 export default function fetchData(fetchRules) {
     return function (Target) {

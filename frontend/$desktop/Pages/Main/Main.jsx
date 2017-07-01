@@ -3,11 +3,11 @@ import CSSModules from 'react-css-modules';
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 
-import globalStore from 'common/modules/globalStore';
+import globalStore from 'common/modules/appData';
 
 import locale from 'frontend/modules/localization';
 
-import ReactSmartModal from 'frontend/$common/components/react-smart-modal';
+import ReactSmartModal from 'frontend/components/react-smart-modal';
 
 const _ = locale.get.bind(locale, require('./Main.json'));
 
